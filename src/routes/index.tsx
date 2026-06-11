@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import heroBg from "@/assets/hero-bg.jpg";
 import profile from "@/assets/profile.jpg";
 import {
   MagneticButton,
@@ -51,9 +50,9 @@ function Portfolio() {
   return (
     <div className="relative overflow-x-clip">
       <ScrollProgress />
-      <Particles />
       <Nav theme={theme} toggle={toggle} />
-      <Hero />
+      <Hero theme={theme} toggle={toggle} />
+      <Marquee />
       <About />
       <Education />
       <Experience />
@@ -70,62 +69,34 @@ function Portfolio() {
 
 /* ---------------- Nav ---------------- */
 function Nav({ theme, toggle }: { theme: string; toggle: () => void }) {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3" : "py-5"
-      }`}
-    >
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-500 ${
-          scrolled ? "glass rounded-full border border-border py-2 pl-6 pr-2" : ""
-        }`}
-        style={scrolled ? { maxWidth: "62rem" } : {}}
-      >
-        <a href="#top" className="font-display text-lg font-bold tracking-tight">
-          NYR<span className="text-primary">.</span>
-        </a>
-        <nav className="hidden items-center gap-8 md:flex">
-          {NAV.map(([label, href]) => (
-            <a
-              key={label}
-              href={href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
-        <div className="flex items-center gap-2">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 sm:px-10">
+        <button
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Menu"
+          className="grid h-12 w-12 place-items-center rounded-full border border-foreground/25 bg-background/70 backdrop-blur transition-colors hover:bg-foreground hover:text-background"
+        >
+          <span className="text-lg leading-none">{open ? "✕" : "≡"}</span>
+        </button>
+        <div className="flex items-center gap-4">
           <ThemeToggle theme={theme} toggle={toggle} />
-          <button
-            className="grid h-10 w-10 place-items-center rounded-full glass border border-border md:hidden"
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Menu"
-          >
-            <span className="text-lg">{open ? "✕" : "☰"}</span>
-          </button>
+          <span className="font-display text-sm font-bold tracking-tight">©2026</span>
         </div>
       </div>
       {open && (
         <motion.nav
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mx-6 mt-2 flex flex-col gap-1 rounded-2xl glass border border-border p-4 md:hidden"
+          className="mx-6 flex flex-col gap-1 rounded-2xl border border-border bg-card p-4 shadow-xl sm:mx-10 sm:max-w-xs"
         >
           {NAV.map(([label, href]) => (
             <a
               key={label}
               href={href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm hover:bg-muted"
+              className="rounded-lg px-3 py-2 font-display text-lg font-bold uppercase tracking-tight hover:bg-muted"
             >
               {label}
             </a>
@@ -141,7 +112,7 @@ function ThemeToggle({ theme, toggle }: { theme: string; toggle: () => void }) {
     <button
       onClick={toggle}
       aria-label="Toggle theme"
-      className="grid h-10 w-10 place-items-center rounded-full glass border border-border transition-transform hover:scale-105"
+      className="grid h-12 w-12 place-items-center rounded-full border border-foreground/25 transition-transform hover:scale-105"
     >
       <span className="text-base">{theme === "dark" ? "☀️" : "🌙"}</span>
     </button>
@@ -149,161 +120,139 @@ function ThemeToggle({ theme, toggle }: { theme: string; toggle: () => void }) {
 }
 
 /* ---------------- Hero ---------------- */
-function Hero() {
+function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const yImg = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  void theme;
+  void toggle;
 
   return (
-    <section id="top" ref={ref} className="relative flex min-h-screen items-center pt-28">
-      <motion.div style={{ y }} className="absolute inset-0 -z-10">
-        <img
-          src={heroBg}
-          alt=""
-          className="h-full w-full object-cover opacity-90 dark:opacity-100"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
-        <div className="absolute inset-0 bg-background/30 dark:bg-transparent" />
-      </motion.div>
+    <section id="top" ref={ref} className="relative min-h-screen pt-24">
+      <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
+        {/* meta row */}
+        <Reveal>
+          <div className="flex flex-wrap items-start justify-between gap-4 pt-6">
+            <div>
+              <p className="font-display text-sm font-bold uppercase leading-tight">
+                Agentforce
+                <br />
+                Developer
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-7 w-7 rounded-sm bg-primary" />
+              <p className="font-display text-sm font-bold uppercase leading-tight">
+                Future
+                <br />
+                AI Engineer
+              </p>
+            </div>
+            <p className="font-display text-sm font-bold uppercase">Since 2024</p>
+          </div>
+        </Reveal>
 
-      <motion.div
-        style={{ opacity }}
-        className="mx-auto grid w-full max-w-7xl items-center gap-10 px-6 lg:grid-cols-[1.3fr_1fr]"
-      >
-        <div>
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full glass border border-border px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-primary">
-              <span className="h-2 w-2 animate-pulse-glow rounded-full bg-primary" />
-              Available for opportunities
-            </span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-[0.95] tracking-tight sm:text-7xl xl:text-8xl">
-              Hi, I'm
-              <br />
-              <span className="text-gradient">Nemala</span>
-              <br />
-              <span className="text-gradient">Yash Raj</span>
+        {/* giant name + portrait */}
+        <div className="relative mt-2">
+          <Reveal y={60}>
+            <h1 className="font-display font-black uppercase text-primary display-tight text-[20vw] leading-[0.8] sm:text-[18vw] lg:text-[15vw]">
+              Yash Raj
             </h1>
           </Reveal>
+
+          <motion.div
+            style={{ y: yImg, perspective: 1000 }}
+            className="pointer-events-auto relative z-10 mx-auto -mt-[8vw] w-[78%] max-w-[560px] sm:-mt-[10vw] lg:absolute lg:right-0 lg:top-[-2vw] lg:mx-0 lg:-mt-0 lg:w-[42%]"
+            onMouseMove={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              setTilt({
+                x: ((e.clientY - r.top) / r.height - 0.5) * -10,
+                y: ((e.clientX - r.left) / r.width - 0.5) * 10,
+              });
+            }}
+            onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+          >
+            <motion.img
+              src={profile}
+              alt="Nemala Yash Raj"
+              width={896}
+              height={1152}
+              animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+              transition={{ type: "spring", stiffness: 120, damping: 12 }}
+              className="aspect-[4/5] w-full rounded-sm object-cover object-top shadow-2xl"
+            />
+          </motion.div>
+
+          {/* QR-style block */}
           <Reveal delay={0.2}>
-            <p className="mt-6 text-lg font-medium text-foreground/90">
-              Agentforce Developer • Salesforce Enthusiast • Future AI Engineer
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
-            <p className="mt-3 max-w-xl text-muted-foreground">
-              A passionate technology professional building intelligent systems that bridge
-              enterprise solutions and the future of AI.
-            </p>
-          </Reveal>
-          <Reveal delay={0.4}>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <MagneticButton href="#resume">Download Resume ↓</MagneticButton>
-              <MagneticButton href="#contact" variant="ghost">
-                Contact Me
-              </MagneticButton>
-              <MagneticButton href="#about" variant="ghost">
-                Explore Journey →
-              </MagneticButton>
-            </div>
-          </Reveal>
-          <Reveal delay={0.5}>
-            <div className="mt-8 flex gap-5 text-sm text-muted-foreground">
-              {SOCIALS.map(([label, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-primary"
-                >
-                  {label}
-                </a>
+            <div className="absolute right-2 top-[2vw] hidden h-24 w-24 grid-cols-4 grid-rows-4 gap-1 lg:grid">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <span
+                  key={i}
+                  className={`rounded-[2px] ${[0, 1, 4, 5, 3, 7, 10, 12, 13, 15].includes(i) ? "bg-foreground" : "bg-foreground/15"}`}
+                />
               ))}
             </div>
           </Reveal>
         </div>
 
-        <motion.div
-          className="relative mx-auto hidden lg:block"
-          onMouseMove={(e) => {
-            const r = e.currentTarget.getBoundingClientRect();
-            setTilt({
-              x: ((e.clientY - r.top) / r.height - 0.5) * -16,
-              y: ((e.clientX - r.left) / r.width - 0.5) * 16,
-            });
-          }}
-          onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-          style={{ perspective: 1000 }}
-        >
-          <motion.div
-            animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-            transition={{ type: "spring", stiffness: 120, damping: 12 }}
-            className="animate-float"
-          >
-            <div className="relative overflow-hidden rounded-[2rem] border border-border glow">
-              <img
-                src={profile}
-                alt="Nemala Yash Raj"
-                width={896}
-                height={1152}
-                className="h-[440px] w-[340px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent mix-blend-overlay" />
+        {/* intro + CTAs */}
+        <div className="relative z-10 mt-6 border-t border-border pt-8 lg:pr-[46%]">
+          <Reveal delay={0.1}>
+            <p className="max-w-xl text-lg font-medium">
+              Hi, I'm <span className="font-bold">Nemala Yash Raj</span> — a passionate technology
+              professional building intelligent systems that bridge enterprise solutions and the
+              future of AI.
+            </p>
+            <p className="mt-3 text-sm uppercase tracking-widest text-muted-foreground">
+              Agentforce Developer • Salesforce Enthusiast • Future AI Engineer
+            </p>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <div className="mt-6 flex flex-wrap items-start gap-3">
+              <MagneticButton href="#resume">Resume ↓</MagneticButton>
+              <MagneticButton href="#contact" variant="ghost">
+                Contact
+              </MagneticButton>
+              <MagneticButton href="#about" variant="ghost">
+                Journey →
+              </MagneticButton>
             </div>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+          </Reveal>
+        </div>
+
+      </div>
     </section>
   );
 }
 
-/* ---------------- Particles ---------------- */
-function Particles() {
-  const dots = Array.from({ length: 22 });
-  const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
-  useEffect(() => {
-    const fn = (e: MouseEvent) => {
-      setMouse({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight });
-    };
-    window.addEventListener("mousemove", fn);
-    return () => window.removeEventListener("mousemove", fn);
-  }, []);
+/* ---------------- Marquee ---------------- */
+function Marquee() {
+  const words = [
+    "Agentforce",
+    "Salesforce",
+    "Machine Learning",
+    "LLMs",
+    "Computer Vision",
+    "LangChain",
+    "RAG",
+    "Deep Learning",
+  ];
+  const row = [...words, ...words];
   return (
-    <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
-      {dots.map((_, i) => {
-        const baseX = (i * 37) % 100;
-        const baseY = (i * 53) % 100;
-        const pull = 6 + (i % 5) * 2;
-        return (
-          <motion.span
-            key={i}
-            className="absolute rounded-full bg-primary/30"
-            style={{
-              left: `${baseX}%`,
-              top: `${baseY}%`,
-              width: 4 + (i % 4) * 2,
-              height: 4 + (i % 4) * 2,
-            }}
-            animate={{
-              x: (mouse.x - baseX / 100) * pull * 16,
-              y: (mouse.y - baseY / 100) * pull * 16,
-              opacity: [0.2, 0.6, 0.2],
-            }}
-            transition={{
-              x: { type: "spring", stiffness: 50, damping: 20 },
-              y: { type: "spring", stiffness: 50, damping: 20 },
-              opacity: { duration: 6 + (i % 5), repeat: Infinity, delay: i * 0.3 },
-            }}
-          />
-        );
-      })}
+    <div className="my-10 border-y border-border bg-primary py-4 text-primary-foreground">
+      <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
+        {row.map((w, i) => (
+          <span key={i} className="font-display text-2xl font-black uppercase tracking-tight">
+            {w} <span className="px-4">✦</span>
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
+
 
 /* ---------------- About ---------------- */
 function About() {

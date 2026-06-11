@@ -2,13 +2,13 @@ import { useEffect, useState, type ReactNode } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 export function useTheme() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   useEffect(() => {
     const stored = (typeof localStorage !== "undefined" && localStorage.getItem("theme")) as
       | "dark"
       | "light"
       | null;
-    const initial = stored ?? "dark";
+    const initial = stored ?? "light";
     setTheme(initial);
   }, []);
   useEffect(() => {
@@ -63,11 +63,11 @@ export function MagneticButton({
   onClick?: () => void;
 }) {
   const base =
-    "group relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium tracking-wide transition-all duration-300 will-change-transform";
+    "group relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold uppercase tracking-wider transition-all duration-300 will-change-transform";
   const styles =
     variant === "primary"
-      ? "bg-primary text-primary-foreground hover:shadow-[0_0_40px_-5px_var(--color-primary)] hover:-translate-y-0.5"
-      : "glass border border-border text-foreground hover:-translate-y-0.5 hover:border-primary/50";
+      ? "bg-foreground text-background hover:bg-primary hover:-translate-y-0.5"
+      : "border border-foreground/30 text-foreground hover:bg-foreground hover:text-background hover:-translate-y-0.5";
   const cls = `${base} ${styles}`;
   if (href)
     return (
@@ -91,12 +91,13 @@ export function SectionHeading({
 }) {
   return (
     <Reveal>
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
         {eyebrow}
       </p>
-      <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+      <h2 className="font-display text-5xl font-black uppercase tracking-tight sm:text-6xl md:text-7xl">
         {title}
       </h2>
     </Reveal>
   );
 }
+
