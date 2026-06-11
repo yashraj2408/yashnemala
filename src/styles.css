@@ -28,8 +28,8 @@
 
 :root {
   --radius: 1rem;
-  --background: oklch(0.985 0.002 250);
-  --foreground: oklch(0.18 0.02 255);
+  --background: oklch(0.95 0.04 150);
+  --foreground: oklch(0.2 0.04 155);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.02 255);
   --muted: oklch(0.96 0.004 250);
