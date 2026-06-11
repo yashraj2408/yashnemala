@@ -156,7 +156,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
         {/* giant name + portrait */}
         <div className="relative mt-2">
           <Reveal y={60}>
-            <h1 className="font-display font-black uppercase text-primary display-tight text-[20vw] leading-[0.8] sm:text-[18vw] lg:text-[15vw]">
+            <h1 className="font-display font-black uppercase text-foreground display-tight text-[20vw] leading-[0.8] sm:text-[18vw] lg:text-[15vw]">
               Yash Raj
             </h1>
           </Reveal>
