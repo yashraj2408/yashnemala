@@ -198,7 +198,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
         </div>
 
         {/* intro + CTAs */}
-        <div className="relative z-10 mt-6 grid gap-8 border-t border-border pt-8 lg:grid-cols-[1fr_auto]">
+        <div className="relative z-10 mt-6 border-t border-border pt-8 lg:pr-[46%]">
           <Reveal delay={0.1}>
             <p className="max-w-xl text-lg font-medium">
               Hi, I'm <span className="font-bold">Nemala Yash Raj</span> — a passionate technology
@@ -210,7 +210,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
             </p>
           </Reveal>
           <Reveal delay={0.2}>
-            <div className="flex flex-wrap items-start gap-3">
+            <div className="mt-6 flex flex-wrap items-start gap-3">
               <MagneticButton href="#resume">Resume ↓</MagneticButton>
               <MagneticButton href="#contact" variant="ghost">
                 Contact
@@ -221,6 +221,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
             </div>
           </Reveal>
         </div>
+
       </div>
     </section>
   );
