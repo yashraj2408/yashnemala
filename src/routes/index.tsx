@@ -264,22 +264,43 @@ function Hero() {
 /* ---------------- Particles ---------------- */
 function Particles() {
   const dots = Array.from({ length: 22 });
+  const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
+  useEffect(() => {
+    const fn = (e: MouseEvent) => {
+      setMouse({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight });
+    };
+    window.addEventListener("mousemove", fn);
+    return () => window.removeEventListener("mousemove", fn);
+  }, []);
   return (
     <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
-      {dots.map((_, i) => (
-        <motion.span
-          key={i}
-          className="absolute rounded-full bg-primary/30"
-          style={{
-            left: `${(i * 37) % 100}%`,
-            top: `${(i * 53) % 100}%`,
-            width: 4 + (i % 4) * 2,
-            height: 4 + (i % 4) * 2,
-          }}
-          animate={{ y: [0, -30, 0], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 6 + (i % 5), repeat: Infinity, delay: i * 0.3 }}
-        />
-      ))}
+      {dots.map((_, i) => {
+        const baseX = (i * 37) % 100;
+        const baseY = (i * 53) % 100;
+        const pull = 6 + (i % 5) * 2;
+        return (
+          <motion.span
+            key={i}
+            className="absolute rounded-full bg-primary/30"
+            style={{
+              left: `${baseX}%`,
+              top: `${baseY}%`,
+              width: 4 + (i % 4) * 2,
+              height: 4 + (i % 4) * 2,
+            }}
+            animate={{
+              x: (mouse.x - baseX / 100) * pull * 16,
+              y: (mouse.y - baseY / 100) * pull * 16,
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              x: { type: "spring", stiffness: 50, damping: 20 },
+              y: { type: "spring", stiffness: 50, damping: 20 },
+              opacity: { duration: 6 + (i % 5), repeat: Infinity, delay: i * 0.3 },
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
