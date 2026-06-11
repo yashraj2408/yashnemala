@@ -8,7 +8,7 @@ export function useTheme() {
       | "dark"
       | "light"
       | null;
-    const initial = stored ?? "dark";
+    const initial = stored ?? "light";
     setTheme(initial);
   }, []);
   useEffect(() => {
