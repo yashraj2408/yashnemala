@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 export function useTheme() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
   useEffect(() => {
     const stored = (typeof localStorage !== "undefined" && localStorage.getItem("theme")) as
       | "dark"
