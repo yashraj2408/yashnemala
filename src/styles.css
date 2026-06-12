@@ -90,6 +90,15 @@
     letter-spacing: -0.04em;
     line-height: 0.85;
   }
+  .hero-clip {
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 @keyframes float {
