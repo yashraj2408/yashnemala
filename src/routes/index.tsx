@@ -151,9 +151,9 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
           width={896}
           height={1152}
           initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
+          animate={{ opacity: 0.22, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[clamp(220px,26vw,340px)] w-[clamp(130px,15vw,210px)] -translate-x-1/2 -translate-y-1/2 rounded-sm object-cover object-top opacity-25 shadow-2xl"
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[clamp(220px,26vw,340px)] w-[clamp(130px,15vw,210px)] -translate-x-1/2 -translate-y-1/2 rounded-sm object-cover object-top shadow-2xl"
         />
 
         <Reveal y={50}>
