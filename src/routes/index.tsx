@@ -144,7 +144,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
 
       {/* image-clipped name */}
       <div className="relative flex flex-col items-center">
-        {/* portrait rectangle behind the text */}
+        {/* portrait rectangle peeking behind the text */}
         <motion.img
           src={profile}
           alt="Nemala Yash Raj"
@@ -153,7 +153,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[clamp(240px,30vw,380px)] w-[clamp(150px,18vw,250px)] -translate-x-1/2 -translate-y-[52%] rounded-sm object-cover object-top shadow-2xl"
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[clamp(220px,26vw,340px)] w-[clamp(130px,15vw,210px)] -translate-x-1/2 -translate-y-1/2 rounded-sm object-cover object-top opacity-25 shadow-2xl"
         />
 
         <Reveal y={50}>
@@ -166,11 +166,12 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <p className="relative z-10 -mt-[2vw] text-center font-serif-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl lg:text-5xl">
+          <p className="relative z-10 mt-1 text-center font-serif-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl lg:text-5xl">
             ai engineer
           </p>
         </Reveal>
       </div>
+
 
       {/* intro + CTAs */}
       <Reveal delay={0.25}>
