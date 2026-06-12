@@ -158,7 +158,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
 
         <Reveal y={50}>
           <h1
-            className="hero-clip relative z-10 select-none text-center font-display font-black leading-[0.85] tracking-tight text-foreground display-tight text-[20vw] sm:text-[17vw] lg:text-[14vw]"
+            className="hero-clip font-serif-display relative z-10 select-none text-center font-bold leading-[0.85] tracking-tight text-foreground text-[22vw] sm:text-[18vw] lg:text-[15vw]"
             style={{ backgroundImage: `url(${profile})` }}
           >
             Yash&nbsp;Raj
@@ -166,7 +166,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <p className="relative z-10 -mt-[2vw] text-center font-sans text-2xl font-bold tracking-tight text-primary sm:text-3xl lg:text-4xl">
+          <p className="relative z-10 -mt-[2vw] text-center font-serif-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl lg:text-5xl">
             ai engineer
           </p>
         </Reveal>
