@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import profile from "@/assets/profile-new.png";
 import {
   MagneticButton,
@@ -122,107 +122,83 @@ function ThemeToggle({ theme, toggle }: { theme: string; toggle: () => void }) {
 /* ---------------- Hero ---------------- */
 function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yImg = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   void theme;
   void toggle;
 
   return (
-    <section id="top" ref={ref} className="relative min-h-screen pt-24">
-      <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
-        {/* meta row */}
-        <Reveal>
-          <div className="flex flex-wrap items-start justify-between gap-4 pt-6">
-            <div>
-              <p className="font-display text-sm font-bold uppercase leading-tight">
-                Agentforce
-                <br />
-                Developer
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-7 w-7 rounded-sm bg-primary" />
-              <p className="font-display text-sm font-bold uppercase leading-tight">
-                Future
-                <br />
-                AI Engineer
-              </p>
-            </div>
-            <p className="font-display text-sm font-bold uppercase">Since 2024</p>
-          </div>
+    <section
+      id="top"
+      ref={ref}
+      className="relative flex min-h-screen flex-col items-center justify-center px-6"
+    >
+      {/* top meta */}
+      <Reveal>
+        <div className="absolute inset-x-0 top-28 mx-auto flex max-w-[1600px] flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 text-center text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:px-10">
+          <span>Agentforce Developer</span>
+          <span className="hidden h-1 w-1 rounded-full bg-primary sm:inline-block" />
+          <span>Future AI Engineer</span>
+          <span className="hidden h-1 w-1 rounded-full bg-primary sm:inline-block" />
+          <span>Since 2024</span>
+        </div>
+      </Reveal>
+
+      {/* image-clipped name */}
+      <div className="relative flex flex-col items-center">
+        {/* portrait rectangle peeking behind the text */}
+        <motion.img
+          src={profile}
+          alt="Nemala Yash Raj"
+          width={896}
+          height={1152}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 0.22, scale: 1 }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[clamp(220px,26vw,340px)] w-[clamp(130px,15vw,210px)] -translate-x-1/2 -translate-y-1/2 rounded-sm object-cover object-top shadow-2xl"
+        />
+
+        <Reveal y={50}>
+          <h1
+            className="hero-clip font-serif-display relative z-10 select-none text-center font-bold leading-[0.85] tracking-tight text-foreground text-[22vw] sm:text-[18vw] lg:text-[15vw]"
+            style={{ backgroundImage: `url(${profile})` }}
+          >
+            Yash&nbsp;Raj
+          </h1>
         </Reveal>
 
-        {/* giant name + portrait */}
-        <div className="relative mt-2">
-          <Reveal y={60}>
-            <h1 className="font-display font-black uppercase text-foreground display-tight text-[20vw] leading-[0.8] sm:text-[18vw] lg:text-[15vw]">
-              Yash Raj
-            </h1>
-          </Reveal>
-
-          <motion.div
-            style={{ y: yImg, perspective: 1000 }}
-            className="pointer-events-auto relative z-10 mx-auto -mt-[8vw] w-[78%] max-w-[560px] sm:-mt-[10vw] lg:absolute lg:right-0 lg:top-[-2vw] lg:mx-0 lg:-mt-0 lg:w-[42%]"
-            onMouseMove={(e) => {
-              const r = e.currentTarget.getBoundingClientRect();
-              setTilt({
-                x: ((e.clientY - r.top) / r.height - 0.5) * -10,
-                y: ((e.clientX - r.left) / r.width - 0.5) * 10,
-              });
-            }}
-            onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-          >
-            <motion.img
-              src={profile}
-              alt="Nemala Yash Raj"
-              width={896}
-              height={1152}
-              animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-              transition={{ type: "spring", stiffness: 120, damping: 12 }}
-              className="aspect-[4/5] w-full rounded-sm object-cover object-top shadow-2xl"
-            />
-          </motion.div>
-
-          {/* QR-style block */}
-          <Reveal delay={0.2}>
-            <div className="absolute right-2 top-[2vw] hidden h-24 w-24 grid-cols-4 grid-rows-4 gap-1 lg:grid">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`rounded-[2px] ${[0, 1, 4, 5, 3, 7, 10, 12, 13, 15].includes(i) ? "bg-foreground" : "bg-foreground/15"}`}
-                />
-              ))}
-            </div>
-          </Reveal>
-        </div>
-
-        {/* intro + CTAs */}
-        <div className="relative z-10 mt-6 border-t border-border pt-8 lg:pr-[46%]">
-          <Reveal delay={0.1}>
-            <p className="max-w-xl text-lg font-medium">
-              Hi, I'm <span className="font-bold">Nemala Yash Raj</span> — a passionate technology
-              professional building intelligent systems that bridge enterprise solutions and the
-              future of AI.
-            </p>
-            <p className="mt-3 text-sm uppercase tracking-widest text-muted-foreground">
-              Agentforce Developer • Salesforce Enthusiast • Future AI Engineer
-            </p>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="mt-6 flex flex-wrap items-start gap-3">
-              <MagneticButton href="#resume">Resume ↓</MagneticButton>
-              <MagneticButton href="#contact" variant="ghost">
-                Contact
-              </MagneticButton>
-              <MagneticButton href="#about" variant="ghost">
-                Journey →
-              </MagneticButton>
-            </div>
-          </Reveal>
-        </div>
-
+        <Reveal delay={0.15}>
+          <p className="relative z-10 mt-1 text-center font-serif-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl lg:text-5xl">
+            ai engineer
+          </p>
+        </Reveal>
       </div>
+
+
+      {/* intro + CTAs */}
+      <Reveal delay={0.25}>
+        <div className="mt-10 flex max-w-xl flex-col items-center gap-5 text-center">
+          <p className="text-base font-medium text-muted-foreground sm:text-lg">
+            Hi, I'm <span className="font-bold text-foreground">Nemala Yash Raj</span> — building
+            intelligent systems that bridge enterprise solutions and the future of AI.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <MagneticButton href="#resume">Resume ↓</MagneticButton>
+            <MagneticButton href="#contact" variant="ghost">
+              Contact
+            </MagneticButton>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* scroll cue */}
+      <motion.a
+        href="#about"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, y: [0, 8, 0] }}
+        transition={{ y: { repeat: Infinity, duration: 2 }, opacity: { delay: 0.4 } }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-xs font-semibold uppercase tracking-[0.4em] text-primary"
+      >
+        Scroll
+      </motion.a>
     </section>
   );
 }
