@@ -153,7 +153,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[clamp(280px,42vw,560px)] w-[clamp(200px,30vw,400px)] -translate-x-1/2 -translate-y-[58%] rounded-sm object-cover object-top opacity-90 shadow-2xl"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[clamp(240px,30vw,380px)] w-[clamp(150px,18vw,250px)] -translate-x-1/2 -translate-y-[52%] rounded-sm object-cover object-top shadow-2xl"
         />
 
         <Reveal y={50}>
