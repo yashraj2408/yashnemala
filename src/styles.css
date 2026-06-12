@@ -81,6 +81,9 @@
   .font-display {
     font-family: var(--font-display);
   }
+  .font-serif-display {
+    font-family: "Cormorant Garamond", Georgia, serif;
+  }
   .glass {
     background: var(--glass);
     backdrop-filter: blur(20px) saturate(160%);
