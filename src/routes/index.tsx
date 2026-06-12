@@ -3,10 +3,11 @@ import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import profile from "@/assets/profile-new.png";
 import {
-  PillButton,
+  MagneticButton,
   Reveal,
   ScrollProgress,
   SectionHeading,
+  useTheme,
 } from "@/components/portfolio-ui";
 
 export const Route = createFileRoute("/")({
@@ -44,37 +45,13 @@ const SOCIALS = [
   ["Instagram", "https://www.instagram.com/yash_nemala/"],
 ];
 
-/* ---------------- Tile wrapper ---------------- */
-function Tile({
-  id,
-  tone = "white",
-  children,
-}: {
-  id?: string;
-  tone?: "white" | "parchment" | "dark" | "dark-2";
-  children: React.ReactNode;
-}) {
-  const bg =
-    tone === "white"
-      ? "bg-background text-foreground"
-      : tone === "parchment"
-        ? "bg-parchment text-foreground"
-        : tone === "dark-2"
-          ? "bg-tile-dark-2 text-white"
-          : "bg-tile-dark text-white";
-  return (
-    <section id={id} className={`${bg} px-6 py-20 sm:py-[80px]`}>
-      <div className="mx-auto max-w-[1080px]">{children}</div>
-    </section>
-  );
-}
-
 function Portfolio() {
+  const { theme, toggle } = useTheme();
   return (
     <div className="relative overflow-x-clip">
       <ScrollProgress />
-      <Nav />
-      <Hero />
+      <Nav theme={theme} toggle={toggle} />
+      <Hero theme={theme} toggle={toggle} />
       <Marquee />
       <About />
       <Education />
@@ -85,74 +62,41 @@ function Portfolio() {
       <Learning />
       <ResumeCTA />
       <Contact />
-      <Footer />
+      <Footer theme={theme} toggle={toggle} />
     </div>
   );
 }
 
 /* ---------------- Nav ---------------- */
-function Nav() {
+function Nav({ theme, toggle }: { theme: string; toggle: () => void }) {
   const [open, setOpen] = useState(false);
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* global nav */}
-      <div className="bg-black text-white">
-        <div className="mx-auto flex h-11 max-w-[1080px] items-center justify-between px-6">
-          <a href="#top" className="text-[14px] font-semibold tracking-tight">
-            Yash Raj
-          </a>
-          <nav className="hidden items-center gap-7 md:flex">
-            {NAV.map(([label, href]) => (
-              <a
-                key={label}
-                href={href}
-                className="text-[12px] text-white/85 transition-colors hover:text-white"
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-3">
-            <a
-              href="#contact"
-              className="rounded-sm bg-[#1d1d1f] px-[15px] py-[6px] text-[12px] text-white"
-            >
-              Contact
-            </a>
-            <button
-              onClick={() => setOpen((o) => !o)}
-              aria-label="Menu"
-              className="text-lg leading-none md:hidden"
-            >
-              {open ? "✕" : "≡"}
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* sub-nav frosted */}
-      <div className="glass border-b border-hairline/60">
-        <div className="mx-auto flex h-[52px] max-w-[1080px] items-center justify-between px-6">
-          <span className="text-[21px] font-semibold tracking-tight">Portfolio</span>
-          <div className="hidden items-center gap-6 md:flex">
-            <span className="text-[14px] text-muted-foreground">
-              Agentforce Developer · Future AI Engineer
-            </span>
-            <PillButton href="#resume">Resume</PillButton>
-          </div>
+      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-6 py-5 sm:px-10">
+        <button
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Menu"
+          className="grid h-12 w-12 place-items-center rounded-full border border-foreground/25 bg-background/70 backdrop-blur transition-colors hover:bg-foreground hover:text-background"
+        >
+          <span className="text-lg leading-none">{open ? "✕" : "≡"}</span>
+        </button>
+        <div className="flex items-center gap-4">
+          <ThemeToggle theme={theme} toggle={toggle} />
+          <span className="font-display text-sm font-bold tracking-tight">©2026</span>
         </div>
       </div>
       {open && (
         <motion.nav
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mx-6 mt-2 flex flex-col gap-1 rounded-lg border border-hairline bg-white p-3 shadow-product md:hidden"
+          className="mx-6 flex flex-col gap-1 rounded-2xl border border-border bg-card p-4 shadow-xl sm:mx-10 sm:max-w-xs"
         >
           {NAV.map(([label, href]) => (
             <a
               key={label}
               href={href}
               onClick={() => setOpen(false)}
-              className="rounded-sm px-3 py-2 text-[17px] hover:bg-parchment"
+              className="rounded-lg px-3 py-2 font-display text-lg font-bold uppercase tracking-tight hover:bg-muted"
             >
               {label}
             </a>
@@ -163,53 +107,122 @@ function Nav() {
   );
 }
 
+function ThemeToggle({ theme, toggle }: { theme: string; toggle: () => void }) {
+  return (
+    <button
+      onClick={toggle}
+      aria-label="Toggle theme"
+      className="grid h-12 w-12 place-items-center rounded-full border border-foreground/25 transition-transform hover:scale-105"
+    >
+      <span className="text-base">{theme === "dark" ? "☀️" : "🌙"}</span>
+    </button>
+  );
+}
+
 /* ---------------- Hero ---------------- */
-function Hero() {
+function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const yImg = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const yImg = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  void theme;
+  void toggle;
 
   return (
-    <section
-      id="top"
-      ref={ref}
-      className="flex min-h-screen flex-col items-center justify-center bg-background px-6 pt-32 pb-20 text-center"
-    >
-      <Reveal>
-        <p className="text-[19px] font-semibold text-primary">Nemala Yash Raj</p>
-      </Reveal>
-      <Reveal delay={0.05}>
-        <h1 className="apple-tight mt-3 font-display text-[clamp(40px,9vw,72px)] font-semibold leading-[1.05] text-foreground">
-          Building the future
-          <br />
-          of enterprise AI.
-        </h1>
-      </Reveal>
-      <Reveal delay={0.12}>
-        <p className="mx-auto mt-5 max-w-2xl text-[21px] font-normal text-muted-foreground">
-          Agentforce Developer · Salesforce Enthusiast · Future AI Engineer
-        </p>
-      </Reveal>
-      <Reveal delay={0.18}>
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
-          <PillButton href="#about">Learn more</PillButton>
-          <PillButton href="#contact" variant="ghost">
-            Get in touch
-          </PillButton>
-        </div>
-      </Reveal>
+    <section id="top" ref={ref} className="relative min-h-screen pt-24">
+      <div className="mx-auto max-w-[1600px] px-6 sm:px-10">
+        {/* meta row */}
+        <Reveal>
+          <div className="flex flex-wrap items-start justify-between gap-4 pt-6">
+            <div>
+              <p className="font-display text-sm font-bold uppercase leading-tight">
+                Agentforce
+                <br />
+                Developer
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-7 w-7 rounded-sm bg-primary" />
+              <p className="font-display text-sm font-bold uppercase leading-tight">
+                Future
+                <br />
+                AI Engineer
+              </p>
+            </div>
+            <p className="font-display text-sm font-bold uppercase">Since 2024</p>
+          </div>
+        </Reveal>
 
-      <Reveal delay={0.24}>
-        <motion.div style={{ y: yImg }} className="mt-14 w-[78%] max-w-[420px]">
-          <img
-            src={profile}
-            alt="Nemala Yash Raj"
-            width={896}
-            height={1152}
-            className="aspect-[4/5] w-full rounded-lg object-cover object-top shadow-product"
-          />
-        </motion.div>
-      </Reveal>
+        {/* giant name + portrait */}
+        <div className="relative mt-2">
+          <Reveal y={60}>
+            <h1 className="font-display font-black uppercase text-foreground display-tight text-[20vw] leading-[0.8] sm:text-[18vw] lg:text-[15vw]">
+              Yash Raj
+            </h1>
+          </Reveal>
+
+          <motion.div
+            style={{ y: yImg, perspective: 1000 }}
+            className="pointer-events-auto relative z-10 mx-auto -mt-[8vw] w-[78%] max-w-[560px] sm:-mt-[10vw] lg:absolute lg:right-0 lg:top-[-2vw] lg:mx-0 lg:-mt-0 lg:w-[42%]"
+            onMouseMove={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              setTilt({
+                x: ((e.clientY - r.top) / r.height - 0.5) * -10,
+                y: ((e.clientX - r.left) / r.width - 0.5) * 10,
+              });
+            }}
+            onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+          >
+            <motion.img
+              src={profile}
+              alt="Nemala Yash Raj"
+              width={896}
+              height={1152}
+              animate={{ rotateX: tilt.x, rotateY: tilt.y }}
+              transition={{ type: "spring", stiffness: 120, damping: 12 }}
+              className="aspect-[4/5] w-full rounded-sm object-cover object-top shadow-2xl"
+            />
+          </motion.div>
+
+          {/* QR-style block */}
+          <Reveal delay={0.2}>
+            <div className="absolute right-2 top-[2vw] hidden h-24 w-24 grid-cols-4 grid-rows-4 gap-1 lg:grid">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <span
+                  key={i}
+                  className={`rounded-[2px] ${[0, 1, 4, 5, 3, 7, 10, 12, 13, 15].includes(i) ? "bg-foreground" : "bg-foreground/15"}`}
+                />
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        {/* intro + CTAs */}
+        <div className="relative z-10 mt-6 border-t border-border pt-8 lg:pr-[46%]">
+          <Reveal delay={0.1}>
+            <p className="max-w-xl text-lg font-medium">
+              Hi, I'm <span className="font-bold">Nemala Yash Raj</span> — a passionate technology
+              professional building intelligent systems that bridge enterprise solutions and the
+              future of AI.
+            </p>
+            <p className="mt-3 text-sm uppercase tracking-widest text-muted-foreground">
+              Agentforce Developer • Salesforce Enthusiast • Future AI Engineer
+            </p>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <div className="mt-6 flex flex-wrap items-start gap-3">
+              <MagneticButton href="#resume">Resume ↓</MagneticButton>
+              <MagneticButton href="#contact" variant="ghost">
+                Contact
+              </MagneticButton>
+              <MagneticButton href="#about" variant="ghost">
+                Journey →
+              </MagneticButton>
+            </div>
+          </Reveal>
+        </div>
+
+      </div>
     </section>
   );
 }
@@ -228,11 +241,11 @@ function Marquee() {
   ];
   const row = [...words, ...words];
   return (
-    <div className="overflow-hidden border-y border-hairline bg-parchment py-6">
+    <div className="my-10 border-y border-border bg-primary py-4 text-primary-foreground">
       <div className="flex w-max animate-marquee gap-10 whitespace-nowrap">
         {row.map((w, i) => (
-          <span key={i} className="text-[21px] font-semibold tracking-tight text-foreground/80">
-            {w} <span className="px-4 text-primary">✦</span>
+          <span key={i} className="font-display text-2xl font-black uppercase tracking-tight">
+            {w} <span className="px-4">✦</span>
           </span>
         ))}
       </div>
@@ -240,8 +253,10 @@ function Marquee() {
   );
 }
 
+
 /* ---------------- About ---------------- */
 function About() {
+  const traits = ["Curious learner", "Analytical thinker", "Adaptable", "Passion-driven", "Growth-oriented"];
   const interests = [
     "Solving mathematics problems",
     "Learning new technologies",
@@ -249,32 +264,31 @@ function About() {
     "Watching movies",
     "Anime enthusiast",
   ];
-  const traits = ["Curious learner", "Analytical thinker", "Adaptable", "Passion-driven", "Growth-oriented"];
   return (
-    <Tile id="about" tone="white">
+    <section id="about" className="mx-auto max-w-7xl px-6 py-28">
       <SectionHeading eyebrow="About Me" title="An authentic, human story." />
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      <div className="mt-12 grid gap-8 lg:grid-cols-3">
         <Reveal>
-          <div className="h-full rounded-lg border border-hairline p-6">
-            <h3 className="text-[21px] font-semibold">Professional Summary</h3>
-            <p className="mt-3 text-[17px] leading-[1.47] text-muted-foreground">
+          <div className="rounded-3xl border border-border bg-card p-8">
+            <h3 className="font-display text-xl font-semibold">Professional Summary</h3>
+            <p className="mt-4 text-muted-foreground">
               Working professional currently serving as an Agentforce Developer Intern at Appstrail.
               Passionate about artificial intelligence and continuously exploring technologies that
               shape the future.
             </p>
-            <h3 className="mt-7 text-[21px] font-semibold">Career Goal</h3>
-            <p className="mt-3 text-[17px] leading-[1.47] text-muted-foreground">
+            <h3 className="mt-8 font-display text-xl font-semibold">Career Goal</h3>
+            <p className="mt-4 text-muted-foreground">
               To grow professionally in AI-related fields and contribute to impactful innovations
               that transform industries.
             </p>
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <div className="h-full rounded-lg border border-hairline p-6">
-            <h3 className="text-[21px] font-semibold">Personal Interests</h3>
+          <div className="h-full rounded-3xl border border-border bg-card p-8">
+            <h3 className="font-display text-xl font-semibold">Personal Interests</h3>
             <ul className="mt-4 space-y-3">
               {interests.map((t) => (
-                <li key={t} className="flex items-center gap-3 text-[17px] text-muted-foreground">
+                <li key={t} className="flex items-center gap-3 text-muted-foreground">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   {t}
                 </li>
@@ -283,13 +297,13 @@ function About() {
           </div>
         </Reveal>
         <Reveal delay={0.2}>
-          <div className="h-full rounded-lg border border-hairline bg-parchment p-6">
-            <h3 className="text-[21px] font-semibold">Personality</h3>
+          <div className="h-full rounded-3xl border border-border bg-gradient-to-br from-primary/15 to-accent/5 p-8">
+            <h3 className="font-display text-xl font-semibold">Personality</h3>
             <div className="mt-5 flex flex-wrap gap-2">
               {traits.map((t) => (
                 <span
                   key={t}
-                  className="rounded-pill border border-hairline bg-white px-4 py-2 text-[14px]"
+                  className="rounded-full glass border border-border px-4 py-2 text-sm"
                 >
                   {t}
                 </span>
@@ -298,11 +312,11 @@ function About() {
           </div>
         </Reveal>
       </div>
-    </Tile>
+    </section>
   );
 }
 
-/* ---------------- Education ---------------- */
+/* ---------------- Education + Experience ---------------- */
 function TimelineItem({
   title,
   sub,
@@ -319,17 +333,15 @@ function TimelineItem({
   return (
     <Reveal>
       <div className="relative pl-10">
-        <span className="absolute left-0 top-1 grid h-6 w-6 place-items-center rounded-full bg-primary text-[11px] text-white">
+        <span className="absolute left-0 top-1 grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground glow">
           ◆
         </span>
-        {!last && <span className="absolute left-[11px] top-8 h-full w-px bg-hairline" />}
+        {!last && <span className="absolute left-[13px] top-9 h-full w-px bg-border" />}
         <div className="pb-10">
-          <p className="text-[14px] font-semibold text-primary">{period}</p>
-          <h3 className="mt-1 text-[21px] font-semibold">{title}</h3>
-          <p className="text-[17px] text-muted-foreground">{sub}</p>
-          {body && (
-            <p className="mt-3 max-w-2xl text-[17px] leading-[1.47] text-muted-foreground">{body}</p>
-          )}
+          <p className="text-xs font-semibold uppercase tracking-widest text-primary">{period}</p>
+          <h3 className="mt-1 font-display text-xl font-semibold">{title}</h3>
+          <p className="text-muted-foreground">{sub}</p>
+          {body && <p className="mt-3 max-w-2xl text-sm text-muted-foreground">{body}</p>}
         </div>
       </div>
     </Reveal>
@@ -338,9 +350,9 @@ function TimelineItem({
 
 function Education() {
   return (
-    <Tile id="education" tone="parchment">
+    <section id="education" className="mx-auto max-w-7xl px-6 py-28">
       <SectionHeading eyebrow="Education" title="The learning timeline." />
-      <div className="mx-auto mt-14 max-w-3xl">
+      <div className="mt-14 max-w-3xl">
         <TimelineItem
           period="2019 – 2020"
           title="A.A.N.M & V.V.R.S.R EM High School"
@@ -359,11 +371,10 @@ function Education() {
           last
         />
       </div>
-    </Tile>
+    </section>
   );
 }
 
-/* ---------------- Experience ---------------- */
 function Experience() {
   const resp = [
     "Agentforce development",
@@ -373,30 +384,30 @@ function Experience() {
     "Building intelligent agents",
   ];
   return (
-    <Tile id="journey" tone="dark">
-      <SectionHeading eyebrow="Professional Journey" title="Executive experience." onDark />
+    <section id="journey" className="mx-auto max-w-7xl px-6 py-28">
+      <SectionHeading eyebrow="Professional Journey" title="Executive experience." />
       <Reveal>
-        <div className="mt-14 grid gap-10 rounded-lg border border-white/10 p-8 md:grid-cols-2 md:p-12">
+        <div className="mt-12 grid gap-8 rounded-3xl border border-border bg-card p-8 md:grid-cols-2 md:p-12">
           <div>
-            <p className="text-[14px] font-semibold text-primary-on-dark">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">
               Joined 23 February 2026
             </p>
-            <h3 className="mt-2 text-[34px] font-semibold text-white">Appstrail</h3>
-            <p className="mt-1 text-[21px] text-white/70">Agentforce Developer Intern</p>
-            <p className="mt-6 text-[17px] leading-[1.47] text-white/70">
+            <h3 className="mt-2 font-display text-3xl font-bold">Appstrail</h3>
+            <p className="mt-1 text-lg text-muted-foreground">Agentforce Developer Intern</p>
+            <p className="mt-6 text-muted-foreground">
               Working with Salesforce CRM and Agentforce technologies to help organizations build
               autonomous AI agents capable of securely connecting to enterprise data, understanding
               customer intent, and executing complex workflows with minimal human intervention.
             </p>
           </div>
-          <div className="md:border-l md:border-white/10 md:pl-10">
-            <p className="mb-4 text-[14px] font-semibold uppercase tracking-widest text-white/50">
+          <div className="md:border-l md:border-border md:pl-10">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
               Responsibilities
             </p>
             <ul className="space-y-3">
               {resp.map((r) => (
-                <li key={r} className="flex items-center gap-3 text-[17px] text-white/85">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-primary-on-dark/15 text-xs text-primary-on-dark">
+                <li key={r} className="flex items-center gap-3">
+                  <span className="grid h-6 w-6 place-items-center rounded-full bg-primary/15 text-xs text-primary">
                     ✓
                   </span>
                   {r}
@@ -406,7 +417,7 @@ function Experience() {
           </div>
         </div>
       </Reveal>
-    </Tile>
+    </section>
   );
 }
 
@@ -433,28 +444,31 @@ function Skills() {
     ["Soft Skills", ["Problem Solving", "Continuous Learning", "Adaptability", "Innovation Mindset"]],
   ];
   return (
-    <Tile id="skills" tone="white">
+    <section id="skills" className="mx-auto max-w-7xl px-6 py-28">
       <SectionHeading eyebrow="Skills & Expertise" title="The technical toolkit." />
-      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map(([title, items], i) => (
           <Reveal key={title} delay={(i % 3) * 0.08}>
-            <div className="h-full rounded-lg border border-hairline p-6">
-              <h3 className="text-[19px] font-semibold">{title}</h3>
+            <motion.div
+              whileHover={{ y: -6 }}
+              className="h-full rounded-3xl border border-border bg-card p-7 transition-shadow hover:glow"
+            >
+              <h3 className="font-display text-lg font-semibold">{title}</h3>
               <div className="mt-5 flex flex-wrap gap-2">
                 {items.map((s) => (
                   <span
                     key={s}
-                    className="rounded-pill border border-hairline bg-parchment px-3 py-1.5 text-[14px]"
+                    className="rounded-full border border-border bg-muted px-3 py-1.5 text-sm"
                   >
                     {s}
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </Reveal>
         ))}
       </div>
-    </Tile>
+    </section>
   );
 }
 
@@ -469,20 +483,24 @@ function Services() {
     ["Computer Vision", "Image classification, detection & visual intelligence."],
   ];
   return (
-    <Tile id="services" tone="parchment">
+    <section id="services" className="mx-auto max-w-7xl px-6 py-28">
       <SectionHeading eyebrow="Services" title="What I can build for you." />
-      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {services.map(([t, d], i) => (
           <Reveal key={t} delay={(i % 3) * 0.08}>
-            <div className="h-full rounded-lg border border-hairline bg-white p-6">
-              <span className="text-[28px] font-semibold text-primary">0{i + 1}</span>
-              <h3 className="mt-3 text-[19px] font-semibold">{t}</h3>
-              <p className="mt-2 text-[17px] leading-[1.47] text-muted-foreground">{d}</p>
-            </div>
+            <motion.div
+              whileHover={{ y: -6 }}
+              className="group relative h-full overflow-hidden rounded-3xl border border-border bg-card p-7"
+            >
+              <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-primary/10 blur-2xl transition-all group-hover:bg-primary/25" />
+              <span className="font-display text-3xl text-primary">0{i + 1}</span>
+              <h3 className="mt-4 font-display text-lg font-semibold">{t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+            </motion.div>
           </Reveal>
         ))}
       </div>
-    </Tile>
+    </section>
   );
 }
 
@@ -506,44 +524,49 @@ function Projects() {
     ],
   ] as [string, string, string[]][];
   return (
-    <Tile id="projects" tone="white">
+    <section id="projects" className="mx-auto max-w-7xl px-6 py-28">
       <SectionHeading eyebrow="Projects" title="Selected work." />
-      <div className="mt-14 grid gap-6 md:grid-cols-3">
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
         {projects.map(([t, d, tags], i) => (
           <Reveal key={t} delay={i * 0.1}>
-            <div className="flex h-full flex-col overflow-hidden rounded-lg border border-hairline">
-              <div className="relative aspect-[16/10] bg-parchment">
+            <motion.div
+              whileHover={{ y: -8 }}
+              className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/25 via-accent/10 to-transparent">
                 <div className="absolute inset-0 grid place-items-center">
-                  <span className="text-[56px] font-semibold text-foreground/10">0{i + 1}</span>
+                  <span className="font-display text-6xl font-bold text-foreground/15">
+                    0{i + 1}
+                  </span>
                 </div>
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="text-[19px] font-semibold">{t}</h3>
-                <p className="mt-2 flex-1 text-[17px] leading-[1.47] text-muted-foreground">{d}</p>
+                <h3 className="font-display text-xl font-semibold">{t}</h3>
+                <p className="mt-2 flex-1 text-sm text-muted-foreground">{d}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-pill border border-hairline px-3 py-1 text-[12px] text-muted-foreground"
+                      className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </Reveal>
         ))}
       </div>
       <Reveal delay={0.2}>
-        <div className="mt-10 rounded-lg border border-dashed border-hairline p-10 text-center">
-          <h3 className="text-[24px] font-semibold">More Innovations Coming Soon</h3>
-          <p className="mt-2 text-[17px] text-muted-foreground">
+        <div className="mt-10 rounded-3xl border border-dashed border-border bg-card/50 p-10 text-center">
+          <h3 className="font-display text-2xl font-bold">More Innovations Coming Soon</h3>
+          <p className="mt-2 text-muted-foreground">
             Continuously building — bigger AI experiences are on the way.
           </p>
         </div>
       </Reveal>
-    </Tile>
+    </section>
   );
 }
 
@@ -558,45 +581,41 @@ function Learning() {
     "Emerging AI Trends",
   ];
   return (
-    <Tile tone="dark-2">
-      <SectionHeading eyebrow="Currently Exploring" title="Always learning." onDark />
-      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <section className="mx-auto max-w-7xl px-6 py-28">
+      <SectionHeading eyebrow="Currently Exploring" title="Always learning." />
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((t, i) => (
           <Reveal key={t} delay={(i % 3) * 0.08}>
-            <div className="flex items-center gap-4 rounded-lg border border-white/10 p-5">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary-on-dark/15 text-primary-on-dark">
+            <div className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/15 font-display text-primary">
                 {i + 1}
               </span>
-              <span className="text-[17px] text-white/90">{t}</span>
+              <span className="font-medium">{t}</span>
             </div>
           </Reveal>
         ))}
       </div>
-    </Tile>
+    </section>
   );
 }
 
 /* ---------------- Resume CTA ---------------- */
 function ResumeCTA() {
   return (
-    <Tile id="resume" tone="parchment">
+    <section id="resume" className="mx-auto max-w-7xl px-6 py-20">
       <Reveal>
-        <div className="py-10 text-center">
-          <h2 className="apple-tight font-display text-[40px] font-semibold sm:text-[48px]">
-            Get my resume
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-[21px] text-muted-foreground">
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-primary/20 via-card to-card p-12 text-center md:p-20">
+          <div className="absolute left-1/2 top-0 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/30 blur-3xl" />
+          <h2 className="font-display text-4xl font-bold sm:text-5xl">Get my resume</h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
             Explore my journey, achievements, and technical expertise.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
-            <PillButton href="#contact">Download Resume</PillButton>
-            <PillButton href="#projects" variant="ghost">
-              View projects
-            </PillButton>
+          <div className="mt-8 flex justify-center">
+            <MagneticButton href="#contact">Download Resume ↓</MagneticButton>
           </div>
         </div>
       </Reveal>
-    </Tile>
+    </section>
   );
 }
 
@@ -609,20 +628,25 @@ function Contact() {
     ["Location", "India", undefined],
   ] as [string, string, string?][];
   return (
-    <Tile id="contact" tone="white">
+    <section id="contact" className="mx-auto max-w-7xl px-6 py-28">
       <SectionHeading eyebrow="Contact" title="Let's build together." />
-      <div className="mt-14 grid gap-6 lg:grid-cols-2">
+      <div className="mt-12 grid gap-8 lg:grid-cols-2">
         <Reveal>
           <div className="space-y-4">
             {info.map(([label, value, href]) => (
-              <div key={label} className="rounded-lg border border-hairline p-6">
-                <p className="text-[14px] font-semibold text-primary">{label}</p>
+              <div
+                key={label}
+                className="rounded-2xl border border-border bg-card p-6"
+              >
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+                  {label}
+                </p>
                 {href ? (
-                  <a href={href} className="mt-1 block text-[19px] hover:text-primary">
+                  <a href={href} className="mt-1 block text-lg hover:text-primary">
                     {value}
                   </a>
                 ) : (
-                  <p className="mt-1 text-[19px]">{value}</p>
+                  <p className="mt-1 text-lg">{value}</p>
                 )}
               </div>
             ))}
@@ -633,7 +657,7 @@ function Contact() {
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-pill border border-hairline px-5 py-2.5 text-[14px] transition-colors hover:border-primary hover:text-primary"
+                  className="rounded-full glass border border-border px-5 py-2.5 text-sm transition-colors hover:border-primary/50"
                 >
                   {label}
                 </a>
@@ -647,75 +671,74 @@ function Contact() {
               e.preventDefault();
               setSent(true);
             }}
-            className="rounded-lg border border-hairline p-8"
+            className="rounded-3xl border border-border bg-card p-8"
           >
             <div className="grid gap-4">
               <input
                 required
                 placeholder="Your name"
-                className="rounded-md border border-hairline bg-white px-4 py-3 text-[17px] outline-none focus:border-primary"
+                className="rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
               />
               <input
                 required
                 type="email"
                 placeholder="Your email"
-                className="rounded-md border border-hairline bg-white px-4 py-3 text-[17px] outline-none focus:border-primary"
+                className="rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
               />
               <textarea
                 required
                 rows={4}
                 placeholder="Your message"
-                className="resize-none rounded-md border border-hairline bg-white px-4 py-3 text-[17px] outline-none focus:border-primary"
+                className="resize-none rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
               />
-              <PillButton type="submit">{sent ? "Message sent ✓" : "Send message"}</PillButton>
+              <MagneticButton>{sent ? "Message sent ✓" : "Send message →"}</MagneticButton>
             </div>
           </form>
         </Reveal>
       </div>
-    </Tile>
+    </section>
   );
 }
 
 /* ---------------- Footer ---------------- */
-function Footer() {
+function Footer({ theme, toggle }: { theme: string; toggle: () => void }) {
   return (
-    <footer className="bg-parchment">
-      <div className="mx-auto max-w-[1080px] px-6 py-16">
-        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-[24px] font-semibold">
-              Nemala Yash Raj<span className="text-primary">.</span>
-            </p>
-            <p className="mt-2 max-w-sm text-[17px] text-muted-foreground">
-              Building intelligent experiences for tomorrow.
-            </p>
-          </div>
-          <div className="flex flex-col gap-4 md:items-end">
-            <nav className="flex flex-wrap gap-5 text-[14px] text-muted-foreground">
-              {NAV.map(([label, href]) => (
-                <a key={label} href={href} className="hover:text-foreground">
-                  {label}
-                </a>
-              ))}
-            </nav>
-            <div className="flex items-center gap-5">
-              {SOCIALS.map(([label, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[14px] text-muted-foreground hover:text-primary"
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
+    <footer className="border-t border-border">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-14 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="font-display text-2xl font-bold">
+            Nemala Yash Raj<span className="text-primary">.</span>
+          </p>
+          <p className="mt-2 max-w-sm text-muted-foreground">
+            Building intelligent experiences for tomorrow.
+          </p>
+        </div>
+        <div className="flex flex-col gap-5 md:items-end">
+          <nav className="flex flex-wrap gap-5 text-sm text-muted-foreground">
+            {NAV.map(([label, href]) => (
+              <a key={label} href={href} className="hover:text-foreground">
+                {label}
+              </a>
+            ))}
+          </nav>
+          <div className="flex items-center gap-4">
+            {SOCIALS.map(([label, href]) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm text-muted-foreground hover:text-primary"
+              >
+                {label}
+              </a>
+            ))}
+            <ThemeToggle theme={theme} toggle={toggle} />
           </div>
         </div>
-        <div className="mt-12 border-t border-hairline pt-6 text-[12px] text-muted-foreground">
-          © {new Date().getFullYear()} Nemala Yash Raj. All rights reserved.
-        </div>
+      </div>
+      <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} Nemala Yash Raj. All rights reserved.
       </div>
     </footer>
   );
