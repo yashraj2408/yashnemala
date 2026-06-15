@@ -40,7 +40,7 @@ const SUGGESTIONS = [
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [initial] = useState<UIMessage[]>(() => loadMessages());
 
   const { messages, sendMessage, status, setMessages } = useChat({
@@ -62,7 +62,10 @@ export function ChatWidget() {
   // focus textarea when opened or after stream completes
   useEffect(() => {
     if (open && status !== "streaming") {
-      const t = setTimeout(() => textareaRef.current?.focus(), 80);
+      const t = setTimeout(
+        () => containerRef.current?.querySelector("textarea")?.focus(),
+        120,
+      );
       return () => clearTimeout(t);
     }
   }, [open, status]);
