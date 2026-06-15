@@ -10,6 +10,7 @@ import {
   SectionHeading,
   useTheme,
 } from "@/components/portfolio-ui";
+import { ChatWidget } from "@/components/chat-widget";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,6 +65,7 @@ function Portfolio() {
       <ResumeCTA />
       <Contact />
       <Footer theme={theme} toggle={toggle} />
+      <ChatWidget />
     </div>
   );
 }
