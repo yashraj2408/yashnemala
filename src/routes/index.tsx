@@ -590,7 +590,9 @@ function ResumeCTA() {
             Explore my journey, achievements, and technical expertise.
           </p>
           <div className="mt-8 flex justify-center">
-            <MagneticButton href="#contact">Download Resume ↓</MagneticButton>
+            <MagneticButton href={resumeAsset.url} download="Nemala_Yash_Raj_Resume.pdf">
+              Download Resume ↓
+            </MagneticButton>
           </div>
         </div>
       </Reveal>
