@@ -179,10 +179,9 @@ export function ChatWidget() {
             </Conversation>
 
             {/* composer */}
-            <div className="border-t border-border p-3">
+            <div ref={containerRef} className="border-t border-border p-3">
               <PromptInput onSubmit={submit}>
                 <PromptInputTextarea
-                  ref={textareaRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message..."
