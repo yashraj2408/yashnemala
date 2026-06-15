@@ -182,7 +182,9 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
             intelligent systems that bridge enterprise solutions and the future of AI.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <MagneticButton href="#resume">Resume ↓</MagneticButton>
+            <MagneticButton href={resumeAsset.url} download="Nemala_Yash_Raj_Resume.pdf">
+              Resume ↓
+            </MagneticButton>
             <MagneticButton href="#contact" variant="ghost">
               Contact
             </MagneticButton>
