@@ -10,6 +10,7 @@ import {
   SectionHeading,
   useTheme,
 } from "@/components/portfolio-ui";
+import { ChatWidget } from "@/components/chat-widget";
 
 export const Route = createFileRoute("/")({
   head: () => ({
