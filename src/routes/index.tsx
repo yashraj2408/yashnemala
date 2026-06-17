@@ -605,6 +605,8 @@ function ResumeCTA() {
 /* ---------------- Contact ---------------- */
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const info = [
     ["Email", "yashrajnemala@gmail.com", "mailto:yashrajnemala@gmail.com"],
     ["Phone", "+91 7997244791", "tel:+917997244791"],
@@ -650,31 +652,70 @@ function Contact() {
         </Reveal>
         <Reveal delay={0.1}>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              setSent(true);
+              if (sending) return;
+              setError(null);
+              setSending(true);
+              const form = e.currentTarget;
+              const data = new FormData(form);
+              try {
+                const res = await fetch("/api/contact", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    name: data.get("name"),
+                    email: data.get("email"),
+                    message: data.get("message"),
+                  }),
+                });
+                if (!res.ok) {
+                  const body = await res.json().catch(() => ({}));
+                  throw new Error(body.error || "Failed to send message.");
+                }
+                setSent(true);
+                form.reset();
+              } catch (err) {
+                setError(
+                  err instanceof Error ? err.message : "Something went wrong.",
+                );
+              } finally {
+                setSending(false);
+              }
             }}
             className="rounded-3xl border border-border bg-card p-8"
           >
             <div className="grid gap-4">
               <input
                 required
+                name="name"
                 placeholder="Your name"
                 className="rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
               />
               <input
                 required
+                name="email"
                 type="email"
                 placeholder="Your email"
                 className="rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
               />
               <textarea
                 required
+                name="message"
                 rows={4}
                 placeholder="Your message"
                 className="resize-none rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
               />
-              <MagneticButton>{sent ? "Message sent ✓" : "Send message →"}</MagneticButton>
+              {error && (
+                <p className="text-sm text-destructive">{error}</p>
+              )}
+              <MagneticButton>
+                {sending
+                  ? "Sending…"
+                  : sent
+                    ? "Message sent ✓"
+                    : "Send message →"}
+              </MagneticButton>
             </div>
           </form>
         </Reveal>
