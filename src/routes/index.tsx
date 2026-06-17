@@ -605,6 +605,8 @@ function ResumeCTA() {
 /* ---------------- Contact ---------------- */
 function Contact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const info = [
     ["Email", "yashrajnemala@gmail.com", "mailto:yashrajnemala@gmail.com"],
     ["Phone", "+91 7997244791", "tel:+917997244791"],
