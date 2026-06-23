@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import profile from "@/assets/profile-new.png";
-import resumeAsset from "@/assets/yash-resume.pdf.asset.json" with { type: "json" };
+import resumeAsset from "@/assets/yash-resume.pdf.asset.json";
 const resumeUrl = (resumeAsset as { url: string }).url;
 import {
   MagneticButton,
