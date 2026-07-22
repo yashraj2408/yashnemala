@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, type MotionProps } from "framer-motion";
 import { useEffect, useRef, type ReactNode } from "react";
-import { Instagram, Linkedin, Twitter } from "lucide-react";
+
 import Hls from "hls.js";
 
 import avatar1 from "../assets/avatar-1.jpg";
