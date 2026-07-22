@@ -101,13 +101,41 @@ function LithosPage() {
   const smooth = useRef({ x: -999, y: -999 });
   const rafRef = useRef<number | null>(null);
   const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReducedMotion(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      // Static centered reveal — no cursor tracking
+      setCursorPos({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+      return;
+    }
     const onMove = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
     };
+    const onKey = (e: KeyboardEvent) => {
+      const step = 40;
+      if (mouse.current.x < 0) {
+        mouse.current.x = window.innerWidth / 2;
+        mouse.current.y = window.innerHeight / 2;
+      }
+      if (e.key === "ArrowLeft") mouse.current.x -= step;
+      else if (e.key === "ArrowRight") mouse.current.x += step;
+      else if (e.key === "ArrowUp") mouse.current.y -= step;
+      else if (e.key === "ArrowDown") mouse.current.y += step;
+      else return;
+      e.preventDefault();
+    };
     window.addEventListener("mousemove", onMove);
+    window.addEventListener("keydown", onKey);
     const loop = () => {
       smooth.current.x += (mouse.current.x - smooth.current.x) * 0.1;
       smooth.current.y += (mouse.current.y - smooth.current.y) * 0.1;
@@ -117,13 +145,14 @@ function LithosPage() {
     rafRef.current = requestAnimationFrame(loop);
     return () => {
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("keydown", onKey);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div
-      className="min-h-screen bg-white tracking-[-0.02em]"
+      className="min-h-screen bg-white tracking-[-0.02em] [&_button]:focus-visible:outline-none [&_button]:focus-visible:ring-2 [&_button]:focus-visible:ring-white [&_button]:focus-visible:ring-offset-2 [&_button]:focus-visible:ring-offset-black"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <section
@@ -138,6 +167,7 @@ function LithosPage() {
 
         {/* Reveal layer */}
         <RevealLayer image={BG_IMAGE_2} cursorX={cursorPos.x} cursorY={cursorPos.y} />
+
 
         {/* Nav */}
         <nav className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-5 md:px-10 py-5">
