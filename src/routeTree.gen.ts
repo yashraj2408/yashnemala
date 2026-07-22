@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MindloopRouteImport } from './routes/mindloop'
 import { Route as LithosRouteImport } from './routes/lithos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const MindloopRoute = MindloopRouteImport.update({
+  id: '/mindloop',
+  path: '/mindloop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LithosRoute = LithosRouteImport.update({
   id: '/lithos',
   path: '/lithos',
@@ -38,12 +44,14 @@ const ApiChatRoute = ApiChatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/lithos': typeof LithosRoute
+  '/mindloop': typeof MindloopRoute
   '/api/chat': typeof ApiChatRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/lithos': typeof LithosRoute
+  '/mindloop': typeof MindloopRoute
   '/api/chat': typeof ApiChatRoute
   '/api/contact': typeof ApiContactRoute
 }
@@ -51,26 +59,35 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/lithos': typeof LithosRoute
+  '/mindloop': typeof MindloopRoute
   '/api/chat': typeof ApiChatRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lithos' | '/api/chat' | '/api/contact'
+  fullPaths: '/' | '/lithos' | '/mindloop' | '/api/chat' | '/api/contact'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lithos' | '/api/chat' | '/api/contact'
-  id: '__root__' | '/' | '/lithos' | '/api/chat' | '/api/contact'
+  to: '/' | '/lithos' | '/mindloop' | '/api/chat' | '/api/contact'
+  id: '__root__' | '/' | '/lithos' | '/mindloop' | '/api/chat' | '/api/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LithosRoute: typeof LithosRoute
+  MindloopRoute: typeof MindloopRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiContactRoute: typeof ApiContactRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mindloop': {
+      id: '/mindloop'
+      path: '/mindloop'
+      fullPath: '/mindloop'
+      preLoaderRoute: typeof MindloopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lithos': {
       id: '/lithos'
       path: '/lithos'
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LithosRoute: LithosRoute,
+  MindloopRoute: MindloopRoute,
   ApiChatRoute: ApiChatRoute,
   ApiContactRoute: ApiContactRoute,
 }
