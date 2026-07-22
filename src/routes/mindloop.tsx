@@ -91,13 +91,13 @@ function Navbar() {
       </div>
       <div className="flex items-center gap-2">
         <GlassIconButton label="Instagram">
-          <Instagram size={16} />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
         </GlassIconButton>
         <GlassIconButton label="LinkedIn">
-          <Linkedin size={16} />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.06c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.77 2.65 4.77 6.1V21H18.6v-5.4c0-1.29-.02-2.94-1.8-2.94-1.8 0-2.08 1.4-2.08 2.85V21H10z"/></svg>
         </GlassIconButton>
         <GlassIconButton label="Twitter">
-          <Twitter size={16} />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H22l-7.5 8.6L23 21h-6.9l-5.4-6.4L4.5 21H1.4l8-9.2L1 3h7l4.9 6zm-1.2 16h1.7L7.4 4.9H5.6z"/></svg>
         </GlassIconButton>
       </div>
     </nav>
