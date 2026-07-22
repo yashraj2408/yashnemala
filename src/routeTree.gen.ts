@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LithosRouteImport } from './routes/lithos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const LithosRoute = LithosRouteImport.update({
+  id: '/lithos',
+  path: '/lithos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,47 @@ const ApiChatRoute = ApiChatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/lithos': typeof LithosRoute
   '/api/chat': typeof ApiChatRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/lithos': typeof LithosRoute
   '/api/chat': typeof ApiChatRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/lithos': typeof LithosRoute
   '/api/chat': typeof ApiChatRoute
   '/api/contact': typeof ApiContactRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat' | '/api/contact'
+  fullPaths: '/' | '/lithos' | '/api/chat' | '/api/contact'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat' | '/api/contact'
-  id: '__root__' | '/' | '/api/chat' | '/api/contact'
+  to: '/' | '/lithos' | '/api/chat' | '/api/contact'
+  id: '__root__' | '/' | '/lithos' | '/api/chat' | '/api/contact'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LithosRoute: typeof LithosRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiContactRoute: typeof ApiContactRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/lithos': {
+      id: '/lithos'
+      path: '/lithos'
+      fullPath: '/lithos'
+      preLoaderRoute: typeof LithosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LithosRoute: LithosRoute,
   ApiChatRoute: ApiChatRoute,
   ApiContactRoute: ApiContactRoute,
 }
