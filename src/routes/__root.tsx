@@ -77,19 +77,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
+      { title: "Nemala Yash Raj — Portfolio" },
       { name: "description", content: "A premium, interactive portfolio website showcasing AI expertise and professional journey." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
+      { name: "author", content: "Nemala Yash Raj" },
+      { property: "og:title", content: "Nemala Yash Raj — Portfolio" },
       { property: "og:description", content: "A premium, interactive portfolio website showcasing AI expertise and professional journey." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
+      { property: "og:site_name", content: "Nemala Yash Raj" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Nemala Yash Raj — Portfolio" },
       { name: "twitter:description", content: "A premium, interactive portfolio website showcasing AI expertise and professional journey." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cc575688-da03-4c06-85f2-f2416c624f3f/id-preview-34e6744c--6d28f473-21da-4140-8912-ef615293ae55.lovable.app-1781180228349.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cc575688-da03-4c06-85f2-f2416c624f3f/id-preview-34e6744c--6d28f473-21da-4140-8912-ef615293ae55.lovable.app-1781180228349.png" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Nemala Yash Raj — Portfolio",
+          description:
+            "Portfolio of Nemala Yash Raj, Agentforce Developer and aspiring AI engineer.",
+          url: "https://yashnemala.lovable.app/",
+        }),
+      },
+    ],
+
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
