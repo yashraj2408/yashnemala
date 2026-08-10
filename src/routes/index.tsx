@@ -196,8 +196,12 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
             className="hero-clip font-serif-display relative z-10 select-none text-center font-bold leading-[0.85] tracking-tight text-foreground text-[22vw] sm:text-[18vw] lg:text-[15vw]"
             style={{ backgroundImage: `url(${profile})` }}
           >
-            Yash&nbsp;Raj
+            <span aria-hidden="true">Yash&nbsp;Raj</span>
+            <span className="sr-only">
+              Nemala Yash Raj — Agentforce Developer &amp; AI Engineer
+            </span>
           </h1>
+
         </Reveal>
 
         <Reveal delay={0.15}>
