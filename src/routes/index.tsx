@@ -28,8 +28,39 @@ export const Route = createFileRoute("/")({
         content: "Agentforce Developer • Salesforce Enthusiast • AI Engineer",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://yashnemala.lovable.app/" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "https://yashnemala.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Nemala Yash Raj",
+          jobTitle: "Agentforce Developer Intern",
+          url: "https://yashnemala.lovable.app/",
+          worksFor: { "@type": "Organization", name: "Appstrail" },
+          alumniOf: { "@type": "CollegeOrUniversity", name: "KL University" },
+          email: "mailto:yashrajnemala@gmail.com",
+          knowsAbout: [
+            "Artificial Intelligence",
+            "Salesforce",
+            "Agentforce",
+            "Machine Learning",
+            "Apex",
+            "Lightning Web Components",
+          ],
+          sameAs: [
+            "https://www.linkedin.com/in/yash-nemala-8bbb2028a/",
+            "https://github.com/yashraj2408",
+          ],
+        }),
+      },
     ],
   }),
+
   component: Portfolio,
 });
 
@@ -165,8 +196,12 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
             className="hero-clip font-serif-display relative z-10 select-none text-center font-bold leading-[0.85] tracking-tight text-foreground text-[22vw] sm:text-[18vw] lg:text-[15vw]"
             style={{ backgroundImage: `url(${profile})` }}
           >
-            Yash&nbsp;Raj
+            <span aria-hidden="true">Yash&nbsp;Raj</span>
+            <span className="sr-only">
+              Nemala Yash Raj — Agentforce Developer &amp; AI Engineer
+            </span>
           </h1>
+
         </Reveal>
 
         <Reveal delay={0.15}>
