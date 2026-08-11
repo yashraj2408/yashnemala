@@ -20,10 +20,36 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages } = (await request.json()) as ChatRequestBody;
-        if (!Array.isArray(messages)) {
+        let parsedBody: ChatRequestBody;
+        try {
+          parsedBody = (await request.json()) as ChatRequestBody;
+        } catch {
+          return new Response("Invalid request", { status: 400 });
+        }
+        const { messages } = parsedBody;
+        if (!Array.isArray(messages) || messages.length === 0) {
           return new Response("Messages are required", { status: 400 });
         }
+
+        const MAX_MESSAGES = 40;
+        const MAX_TOTAL_CHARS = 12000;
+        if (messages.length > MAX_MESSAGES) {
+          return new Response("Too many messages", { status: 400 });
+        }
+
+        let totalChars = 0;
+        for (const m of messages as UIMessage[]) {
+          const parts = Array.isArray(m?.parts) ? m.parts : [];
+          for (const p of parts) {
+            if (p && typeof p === "object" && "text" in p && typeof (p as { text?: unknown }).text === "string") {
+              totalChars += (p as { text: string }).text.length;
+            }
+          }
+        }
+        if (totalChars > MAX_TOTAL_CHARS) {
+          return new Response("Message content too large", { status: 400 });
+        }
+
 
         const key = process.env.LOVABLE_API_KEY;
         if (!key) {
