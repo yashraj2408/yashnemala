@@ -69,11 +69,13 @@ export const Route = createFileRoute("/api/contact")({
 
         if (!res.ok) {
           const detail = await res.text();
+          console.error("Contact email gateway error", res.status, detail);
           return Response.json(
-            { error: "Failed to send message.", detail },
+            { error: "Failed to send message. Please try again later." },
             { status: 502 },
           );
         }
+
 
         return Response.json({ ok: true });
       },
