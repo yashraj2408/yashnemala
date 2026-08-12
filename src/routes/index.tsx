@@ -67,6 +67,7 @@ const NAV = [
   ["About", "#about"],
   ["Journey", "#journey"],
   ["Skills", "#skills"],
+  ["Certs", "#certifications"],
   ["Projects", "#projects"],
   ["Contact", "#contact"],
 ];
@@ -90,6 +91,7 @@ function Portfolio() {
       <Education />
       <Experience />
       <Skills />
+      <Certifications />
       <Services />
       <Projects />
       <Learning />
