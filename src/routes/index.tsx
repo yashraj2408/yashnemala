@@ -173,8 +173,6 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
           <span>Agentforce Developer</span>
           <span className="hidden h-1 w-1 rounded-full bg-primary sm:inline-block" />
           <span>Future AI Engineer</span>
-          <span className="hidden h-1 w-1 rounded-full bg-primary sm:inline-block" />
-          <span>Since 2024</span>
         </div>
       </Reveal>
 
