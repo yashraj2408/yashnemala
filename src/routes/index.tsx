@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import profile from "@/assets/profile-new.png";
-import resumeAsset from "@/assets/yash-resume.pdf.asset.json";
-const resumeUrl = (resumeAsset as { url: string }).url;
+import resumeUrl from "@/assets/YASH_Resume.pdf?url";
 import {
   MagneticButton,
   Reveal,
@@ -68,6 +67,7 @@ const NAV = [
   ["About", "#about"],
   ["Journey", "#journey"],
   ["Skills", "#skills"],
+  ["Certs", "#certifications"],
   ["Projects", "#projects"],
   ["Contact", "#contact"],
 ];
@@ -91,6 +91,7 @@ function Portfolio() {
       <Education />
       <Experience />
       <Skills />
+      <Certifications />
       <Services />
       <Projects />
       <Learning />
@@ -437,6 +438,75 @@ function Experience() {
     </section>
   );
 }
+
+/* ---------------- Certifications ---------------- */
+const CERTIFICATIONS: [string, string, string][] = [
+  [
+    "5-Day AI Agents Intensive — Vibe Coding Course",
+    "Kaggle",
+    "https://www.kaggle.com/certification/badges/yashrajnemala/108",
+  ],
+  [
+    "Red Hat Certified Enterprise Application Developer",
+    "Red Hat",
+    "https://www.credly.com/badges/e995faa2-4a89-4d28-9ce6-2c6a152db90d/public_url",
+  ],
+  [
+    "TalentNext Java Full Stack Certificate",
+    "Wipro",
+    "https://drive.google.com/file/d/1nMorFsxLYyWHDkh29hNmRJuTiV9rBM4b/view?usp=drive_link",
+  ],
+  [
+    "Certified AI Associate",
+    "Salesforce",
+    "https://www.salesforce.com/trailblazer/cv0z3g20afdml4l3qw",
+  ],
+  [
+    "Certified Engineer — Multicloud Network Associate",
+    "Aviatrix",
+    "https://www.credly.com/badges/c2759b99-09d5-4417-8a06-66e26a92ce34/public_url",
+  ],
+  [
+    "Certified Essentials RPA Professional",
+    "Automation Anywhere University",
+    "https://certificates.automationanywhere.com/8379a4aa-8b54-4ab1-9145-f3f51b03999a#acc.NVHpTI9g",
+  ],
+];
+
+function Certifications() {
+  return (
+    <section id="certifications" className="mx-auto max-w-7xl px-6 py-28">
+      <SectionHeading eyebrow="Certifications" title="Credentials & badges." />
+      <div className="mt-12 grid gap-5 sm:grid-cols-2">
+        {CERTIFICATIONS.map(([title, issuer, url], i) => (
+          <Reveal key={title} delay={(i % 2) * 0.08}>
+            <motion.a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              whileHover={{ y: -6 }}
+              className="flex h-full items-start justify-between gap-6 rounded-3xl border border-border bg-card p-7"
+            >
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+                  {issuer}
+                </p>
+                <h3 className="mt-2 font-display text-lg font-semibold leading-snug">{title}</h3>
+                <span className="mt-3 inline-block text-sm text-muted-foreground underline decoration-border underline-offset-4">
+                  View credential
+                </span>
+              </div>
+              <span aria-hidden className="mt-1 text-xl text-muted-foreground">
+                ↗
+              </span>
+            </motion.a>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 
 /* ---------------- Skills ---------------- */
 function Skills() {
