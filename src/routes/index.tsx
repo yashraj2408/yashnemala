@@ -99,6 +99,7 @@ function Portfolio() {
       <Contact />
       <Footer theme={theme} toggle={toggle} />
       <ChatWidget />
+      <CursorMascot />
     </div>
   );
 }
