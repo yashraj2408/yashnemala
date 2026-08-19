@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "@/components/portfolio-ui";
 import { ChatWidget } from "@/components/chat-widget";
+import { CursorMascot } from "@/components/cursor-mascot";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -99,6 +100,7 @@ function Portfolio() {
       <Contact />
       <Footer theme={theme} toggle={toggle} />
       <ChatWidget />
+      <CursorMascot />
     </div>
   );
 }
