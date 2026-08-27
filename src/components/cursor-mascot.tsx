@@ -5,8 +5,8 @@ const FRAMES = 18;
 const SIZE = 96; // rendered character box (px)
 const SHEET_WIDTH = SIZE * FRAMES;
 const HEAD_RATIO = 0.52; // top portion of the sprite that is the head
-const FOLLOW = 0.055; // body lag (slow, so it trails rather than teleports)
-const TURN = 0.12; // head easing
+const FOLLOW = 0.018; // much slower trailing — character walks/runs toward cursor
+const TURN = 0.09; // head easing
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
 /**
