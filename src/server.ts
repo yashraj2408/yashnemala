@@ -66,6 +66,9 @@ export default {
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
+      if (isClientAbort(error) || request.signal?.aborted) {
+        return new Response(null, { status: 204 });
+      }
       console.error(error);
       return new Response(renderErrorPage(), {
         status: 500,
@@ -74,3 +77,4 @@ export default {
     }
   },
 };
+
