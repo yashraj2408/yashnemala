@@ -18,6 +18,22 @@ async function getServerEntry(): Promise<ServerEntry> {
   return serverEntryPromise;
 }
 
+// A client that navigates away/reloads mid-SSR aborts the socket. Node surfaces
+// this as `Error: aborted` / ECONNRESET — it is not an application error.
+function isClientAbort(value: unknown): boolean {
+  const seen = new Set<unknown>();
+  let current: unknown = value;
+  while (current && typeof current === "object" && !seen.has(current)) {
+    seen.add(current);
+    const err = current as { message?: unknown; code?: unknown; cause?: unknown };
+    if (err.code === "ECONNRESET" || err.code === "ECONNABORTED") return true;
+    if (typeof err.message === "string" && /\baborted\b/i.test(err.message)) return true;
+    current = err.cause;
+  }
+  if (typeof value === "string") return /\baborted\b|ECONNRESET/i.test(value);
+  return false;
+}
+
 // h3 swallows in-handler throws into a normal 500 Response with body
 // {"unhandled":true,"message":"HTTPError"} — try/catch alone never fires for those.
 async function normalizeCatastrophicSsrResponse(response: Response): Promise<Response> {
@@ -30,12 +46,18 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
     return response;
   }
 
-  console.error(consumeLastCapturedError() ?? new Error(`h3 swallowed SSR error: ${body}`));
+  const captured = consumeLastCapturedError();
+  if (isClientAbort(captured) || isClientAbort(body)) {
+    return new Response(null, { status: 204 });
+  }
+
+  console.error(captured ?? new Error(`h3 swallowed SSR error: ${body}`));
   return new Response(renderErrorPage(), {
     status: 500,
     headers: { "content-type": "text/html; charset=utf-8" },
   });
 }
+
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
@@ -44,6 +66,9 @@ export default {
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
+      if (isClientAbort(error) || request.signal?.aborted) {
+        return new Response(null, { status: 204 });
+      }
       console.error(error);
       return new Response(renderErrorPage(), {
         status: 500,
@@ -52,3 +77,4 @@ export default {
     }
   },
 };
+
