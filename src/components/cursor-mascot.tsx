@@ -5,8 +5,8 @@ const FRAMES = 18;
 const SIZE = 96; // rendered character box (px)
 const SHEET_WIDTH = SIZE * FRAMES;
 const HEAD_RATIO = 0.52; // top portion of the sprite that is the head
-const FOLLOW = 0.055; // body lag (slow, so it trails rather than teleports)
-const TURN = 0.12; // head easing
+const FOLLOW = 0.018; // much slower trailing — character walks/runs toward cursor
+const TURN = 0.09; // head easing
 const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
 /**
@@ -49,30 +49,36 @@ export function CursorMascot() {
       const dt = Math.min(64, now - last);
       last = now;
 
-      // --- body: lags behind the cursor, keeps a natural offset ---
-      const restX = mouse.current.x - 90 * facing.current;
-      const restY = mouse.current.y + 20;
+      // --- body: trails far behind the cursor so it visibly runs/walks toward it ---
+      const restX = mouse.current.x - 110 * facing.current;
+      const restY = mouse.current.y + 24;
       const prevX = pos.current.x;
+      const prevY = pos.current.y;
       pos.current.x += (restX - pos.current.x) * FOLLOW;
       pos.current.y += (restY - pos.current.y) * FOLLOW;
-      const speed = Math.abs(pos.current.x - prevX);
+      const vx = pos.current.x - prevX;
+      const vy = pos.current.y - prevY;
+      const speed = Math.hypot(vx, vy);
+
+      // --- always face the cursor direction ---
+      const dx = mouse.current.x - pos.current.x;
+      if (Math.abs(dx) > 4) facing.current = dx > 0 ? 1 : -1;
 
       // --- head: vector from face to pointer, eased ---
       const faceX = pos.current.x;
       const faceY = pos.current.y - SIZE * (1 - HEAD_RATIO) * 0.5;
-      const dx = mouse.current.x - faceX;
-      const dy = mouse.current.y - faceY;
-      const targetLX = clamp(dx / 260, -1, 1);
-      const targetLY = clamp(dy / 220, -1, 1);
+      const headDx = mouse.current.x - faceX;
+      const headDy = mouse.current.y - faceY;
+      const targetLX = clamp(headDx / 180, -1, 1);
+      const targetLY = clamp(headDy / 160, -1, 1);
       look.current.x += (targetLX - look.current.x) * TURN;
       look.current.y += (targetLY - look.current.y) * TURN;
 
-      if (Math.abs(dx) > 40) facing.current = dx > 0 ? 1 : -1;
-
-      // --- walk cycle only while actually moving ---
+      // --- walk/run cycle: faster when far from cursor, slower when close ---
       frameClock += dt;
-      const stepping = speed > 0.35;
-      if (stepping && frameClock > 90) {
+      const stepping = speed > 0.08;
+      const runFactor = clamp(speed / 2.5, 0.5, 2.2);
+      if (stepping && frameClock > 110 / runFactor) {
         frame.current = (frame.current + 1) % FRAMES;
         frameClock = 0;
       }
@@ -81,21 +87,27 @@ export function CursorMascot() {
       const head = headRef.current;
       const body = bodyRef.current;
       if (wrap && head && body) {
-        const bob = stepping ? Math.sin(now / 130) * 2 : Math.sin(now / 700) * 1.5;
+        const bob = stepping
+          ? Math.sin(now / (160 / runFactor)) * 3
+          : Math.sin(now / 900) * 1.2;
+
+        // body leans into the movement direction
+        const bodyLean = clamp(vx * facing.current * 2.2, -18, 18);
+
         wrap.style.transform = `translate3d(${pos.current.x - SIZE / 2}px, ${
           pos.current.y - SIZE / 2 + bob
-        }px, 0) scaleX(${facing.current})`;
+        }px, 0) scaleX(${facing.current}) rotateZ(${bodyLean}deg)`;
 
         const offset = `-${frame.current * SIZE}px 0`;
         head.style.backgroundPosition = offset;
         body.style.backgroundPosition = offset;
 
-        // rotation is authored in un-flipped space, so mirror it when facing left
+        // head turns to look at the pointer in the (possibly mirrored) sprite space
         const lx = look.current.x * facing.current;
-        const rotZ = clamp(lx * 22, -22, 22);
-        const rotX = clamp(-look.current.y * 16, -16, 16);
-        head.style.transform = `perspective(320px) translate(${lx * 5}px, ${
-          look.current.y * 4
+        const rotZ = clamp(lx * 34, -34, 34);
+        const rotX = clamp(-look.current.y * 18, -18, 18);
+        head.style.transform = `perspective(320px) translate(${lx * 7}px, ${
+          look.current.y * 5
         }px) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
       }
 
