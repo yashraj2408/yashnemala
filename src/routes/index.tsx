@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import profile from "@/assets/profile-new.png";
-import resumeUrl from "@/assets/YASH_Resume.pdf?url";
+import resumeAsset from "@/assets/nemala-yash-raj-resume.pdf.asset.json";
 import {
   MagneticButton,
   Reveal,
@@ -12,6 +12,8 @@ import {
 } from "@/components/portfolio-ui";
 import { ChatWidget } from "@/components/chat-widget";
 import { CursorMascot } from "@/components/cursor-mascot";
+
+const resumeUrl = (resumeAsset as { url: string }).url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
