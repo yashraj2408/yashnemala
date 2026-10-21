@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import profile from "@/assets/profile-new.png";
-import resumeAsset from "@/assets/nemala-yash-raj-resume.pdf.asset.json";
 import {
   MagneticButton,
   Reveal,
@@ -13,21 +12,21 @@ import {
 import { ChatWidget } from "@/components/chat-widget";
 import { CursorMascot } from "@/components/cursor-mascot";
 
-const resumeUrl = (resumeAsset as { url: string }).url;
+const resumeUrl = "/Nemala_Yash_Raj_Resume.pdf";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nemala Yash Raj — Agentforce Developer & Future AI Engineer" },
+      { title: "Nemala Yash Raj — Backend & AI Engineer | Agentforce & LLM Systems" },
       {
         name: "description",
         content:
-          "Portfolio of Nemala Yash Raj — Agentforce Developer Intern at Appstrail, Salesforce enthusiast and aspiring AI engineer building intelligent enterprise systems.",
+          "Portfolio of Nemala Yash Raj — Backend and AI engineer building Python REST APIs, LLM-powered applications, RAG pipelines, and multi-agent workflows.",
       },
-      { property: "og:title", content: "Nemala Yash Raj — Future AI Engineer" },
+      { property: "og:title", content: "Nemala Yash Raj — Backend & AI Engineer" },
       {
         property: "og:description",
-        content: "Agentforce Developer • Salesforce Enthusiast • AI Engineer",
+        content: "Backend & AI Engineer • Python REST APIs • Multi-Agent Workflows • LangChain & LangGraph",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://yashnemala.lovable.app/" },
@@ -41,18 +40,25 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Nemala Yash Raj",
-          jobTitle: "Agentforce Developer Intern",
+          jobTitle: "Backend & AI Engineer",
           url: "https://yashnemala.lovable.app/",
-          worksFor: { "@type": "Organization", name: "Appstrail" },
+          worksFor: { "@type": "Organization", name: "Appstrail Technologies" },
           alumniOf: { "@type": "CollegeOrUniversity", name: "KL University" },
           email: "mailto:yashrajnemala@gmail.com",
           knowsAbout: [
+            "Python",
+            "REST APIs",
             "Artificial Intelligence",
-            "Salesforce",
+            "RAG Pipelines",
+            "AI Agents",
+            "LangChain",
+            "LangGraph",
+            "Multi-Agent Orchestration",
             "Agentforce",
-            "Machine Learning",
+            "PostgreSQL",
+            "Docker",
+            "AWS",
             "Apex",
-            "Lightning Web Components",
           ],
           sameAs: [
             "https://www.linkedin.com/in/yash-nemala-8bbb2028a/",
@@ -68,10 +74,12 @@ export const Route = createFileRoute("/")({
 
 const NAV = [
   ["About", "#about"],
-  ["Journey", "#journey"],
+  ["Education", "#education"],
+  ["Experience", "#journey"],
   ["Skills", "#skills"],
-  ["Certs", "#certifications"],
   ["Projects", "#projects"],
+  ["Publications", "#publications"],
+  ["Certs", "#certifications"],
   ["Contact", "#contact"],
 ];
 
@@ -94,9 +102,10 @@ function Portfolio() {
       <Education />
       <Experience />
       <Skills />
+      <Projects />
+      <Publications />
       <Certifications />
       <Services />
-      <Projects />
       <Learning />
       <ResumeCTA />
       <Contact />
@@ -174,15 +183,14 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
       {/* top meta */}
       <Reveal>
         <div className="absolute inset-x-0 top-28 mx-auto flex max-w-[1600px] flex-wrap items-center justify-center gap-x-6 gap-y-2 px-6 text-center text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground sm:px-10">
-          <span>Agentforce Developer</span>
+          <span>Backend &amp; AI Engineer</span>
           <span className="hidden h-1 w-1 rounded-full bg-primary sm:inline-block" />
-          <span>Future AI Engineer</span>
+          <span>LLM &amp; Multi-Agent Systems</span>
         </div>
       </Reveal>
 
       {/* image-clipped name */}
       <div className="relative flex flex-col items-center">
-        {/* portrait rectangle peeking behind the text */}
         <motion.img
           src={profile}
           alt="Nemala Yash Raj"
@@ -201,26 +209,24 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
           >
             <span aria-hidden="true">Yash&nbsp;Raj</span>
             <span className="sr-only">
-              Nemala Yash Raj — Agentforce Developer &amp; AI Engineer
+              Nemala Yash Raj — Backend &amp; AI Engineer
             </span>
           </h1>
-
         </Reveal>
 
         <Reveal delay={0.15}>
           <p className="relative z-10 mt-1 text-center font-serif-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl lg:text-5xl">
-            ai engineer
+            backend &amp; ai engineer
           </p>
         </Reveal>
       </div>
-
 
       {/* intro + CTAs */}
       <Reveal delay={0.25}>
         <div className="mt-10 flex max-w-xl flex-col items-center gap-5 text-center">
           <p className="text-base font-medium text-muted-foreground sm:text-lg">
             Hi, I'm <span className="font-bold text-foreground">Nemala Yash Raj</span> — building
-            intelligent systems that bridge enterprise solutions and the future of AI.
+            Python REST APIs and LLM-powered applications, with hands-on RAG pipelines, tool-calling agents, and multi-agent workflows.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <MagneticButton href={resumeUrl} download="Nemala_Yash_Raj_Resume.pdf">
@@ -250,14 +256,15 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
 /* ---------------- Marquee ---------------- */
 function Marquee() {
   const words = [
+    "Agentic RAG",
+    "LangChain & LangGraph",
+    "Python & REST APIs",
     "Agentforce",
-    "Salesforce",
-    "Machine Learning",
-    "LLMs",
-    "Computer Vision",
-    "LangChain",
-    "RAG",
-    "Deep Learning",
+    "Docker & CI/CD",
+    "AWS Cloud",
+    "Multi-Agent Systems",
+    "PostgreSQL",
+    "Spring Boot",
   ];
   const row = [...words, ...words];
   return (
@@ -273,33 +280,35 @@ function Marquee() {
   );
 }
 
-
 /* ---------------- About ---------------- */
 function About() {
-  const traits = ["Curious learner", "Analytical thinker", "Adaptable", "Passion-driven", "Growth-oriented"];
+  const traits = [
+    "Curious learner",
+    "System Designer",
+    "Analytical thinker",
+    "End-to-End Ownership",
+    "Agile Collaborator",
+  ];
   const interests = [
     "Solving mathematics problems",
+    "Exploring multi-agent architectures",
     "Learning new technologies",
     "Collecting coins worldwide",
-    "Watching movies",
     "Anime enthusiast",
   ];
   return (
     <section id="about" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="About Me" title="An authentic, human story." />
+      <SectionHeading eyebrow="About Me" title="Engineering intelligent solutions." />
       <div className="mt-12 grid gap-8 lg:grid-cols-3">
         <Reveal>
           <div className="rounded-3xl border border-border bg-card p-8">
             <h3 className="font-display text-xl font-semibold">Professional Summary</h3>
             <p className="mt-4 text-muted-foreground">
-              Working professional currently serving as an Agentforce Developer Intern at Appstrail.
-              Passionate about artificial intelligence and continuously exploring technologies that
-              shape the future.
+              Backend and AI engineer building Python REST APIs and LLM-powered applications, with hands-on RAG pipelines, tool-calling agents, and multi-agent workflows (LangChain, LangGraph, Agentforce). Experienced with PostgreSQL, Docker, and AWS, and published in CI/CD for ML. Comfortable owning features end to end, from design and testing to production debugging in Agile teams.
             </p>
             <h3 className="mt-8 font-display text-xl font-semibold">Career Goal</h3>
             <p className="mt-4 text-muted-foreground">
-              To grow professionally in AI-related fields and contribute to impactful innovations
-              that transform industries.
+              To engineer scalable backend services and autonomous agent architectures, leveraging cutting-edge LLMs and robust distributed systems to solve high-impact real-world problems.
             </p>
           </div>
         </Reveal>
@@ -318,7 +327,7 @@ function About() {
         </Reveal>
         <Reveal delay={0.2}>
           <div className="h-full rounded-3xl border border-border bg-gradient-to-br from-primary/15 to-accent/5 p-8">
-            <h3 className="font-display text-xl font-semibold">Personality</h3>
+            <h3 className="font-display text-xl font-semibold">Core Values &amp; Mindset</h3>
             <div className="mt-5 flex flex-wrap gap-2">
               {traits.map((t) => (
                 <span
@@ -371,23 +380,19 @@ function TimelineItem({
 function Education() {
   return (
     <section id="education" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="Education" title="The learning timeline." />
+      <SectionHeading eyebrow="Education" title="Academic foundation." />
       <div className="mt-14 max-w-3xl">
-        <TimelineItem
-          period="2019 – 2020"
-          title="A.A.N.M & V.V.R.S.R EM High School"
-          sub="Schooling • Gudlavalleru"
-        />
         <TimelineItem
           period="2020 – 2022"
           title="Narayana Junior College"
-          sub="Intermediate • Gudivada"
+          sub="Intermediate (MPC) • Score: 757 / 1000"
+          body="Strong grounding in Mathematics, Physics, and Chemistry."
         />
         <TimelineItem
           period="2022 – 2026"
           title="KL University"
-          sub="B.Tech in Computer Science Engineering (AI specialization)"
-          body="Graduated while pursuing internship experience — balancing academics with real-world enterprise development."
+          sub="B.Tech in Computer Science & Engineering — CGPA: 9.17 / 10"
+          body="Specialization in Artificial Intelligence, backend development, and scalable cloud computing architectures."
           last
         />
       </div>
@@ -397,40 +402,37 @@ function Education() {
 
 function Experience() {
   const resp = [
-    "Agentforce development",
-    "Salesforce CRM solutions",
-    "Enterprise workflow automation",
-    "AI-powered customer experiences",
-    "Building intelligent agents",
+    "Built and debugged multi-step AI agent workflows (Agentforce) with tool calling, state management, and grounded external-system lookups to automate customer-facing processes in production.",
+    "Designed and shipped REST APIs and backend services (Apex classes, triggers, handlers) that connect agents to business data, with test-class coverage and root cause analysis of production defects.",
+    "Built Lightning Web Components on top of these services for internal tooling, owning features from requirements through testing and deployment.",
+    "Worked in an Agile/Scrum team with peer code reviews, translating requirements into technical solutions through rapid design-test-deploy cycles.",
   ];
   return (
     <section id="journey" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="Professional Journey" title="Executive experience." />
+      <SectionHeading eyebrow="Experience" title="Professional journey." />
       <Reveal>
         <div className="mt-12 grid gap-8 rounded-3xl border border-border bg-card p-8 md:grid-cols-2 md:p-12">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-              Joined 23 February 2026
+              Feb 2026 – Present • Bangalore, India
             </p>
-            <h3 className="mt-2 font-display text-3xl font-bold">Appstrail</h3>
-            <p className="mt-1 text-lg text-muted-foreground">Agentforce Developer Intern</p>
+            <h3 className="mt-2 font-display text-3xl font-bold">Appstrail Technologies</h3>
+            <p className="mt-1 text-lg text-muted-foreground">Software Development Intern</p>
             <p className="mt-6 text-muted-foreground">
-              Working with Salesforce CRM and Agentforce technologies to help organizations build
-              autonomous AI agents capable of securely connecting to enterprise data, understanding
-              customer intent, and executing complex workflows with minimal human intervention.
+              Engineering multi-step AI agent workflows and robust backend services that integrate enterprise data with autonomous intelligence, operating end-to-end within an Agile engineering team.
             </p>
           </div>
           <div className="md:border-l md:border-border md:pl-10">
             <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-              Responsibilities
+              Key Contributions &amp; Impact
             </p>
-            <ul className="space-y-3">
-              {resp.map((r) => (
-                <li key={r} className="flex items-center gap-3">
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-primary/15 text-xs text-primary">
+            <ul className="space-y-4">
+              {resp.map((r, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/15 text-xs text-primary">
                     ✓
                   </span>
-                  {r}
+                  <span className="text-sm leading-relaxed text-muted-foreground">{r}</span>
                 </li>
               ))}
             </ul>
@@ -441,100 +443,48 @@ function Experience() {
   );
 }
 
-/* ---------------- Certifications ---------------- */
-const CERTIFICATIONS: [string, string, string][] = [
-  [
-    "5-Day AI Agents Intensive — Vibe Coding Course",
-    "Kaggle",
-    "https://www.kaggle.com/certification/badges/yashrajnemala/108",
-  ],
-  [
-    "Red Hat Certified Enterprise Application Developer",
-    "Red Hat",
-    "https://www.credly.com/badges/e995faa2-4a89-4d28-9ce6-2c6a152db90d/public_url",
-  ],
-  [
-    "TalentNext Java Full Stack Certificate",
-    "Wipro",
-    "https://drive.google.com/file/d/1nMorFsxLYyWHDkh29hNmRJuTiV9rBM4b/view?usp=drive_link",
-  ],
-  [
-    "Certified AI Associate",
-    "Salesforce",
-    "https://www.salesforce.com/trailblazer/cv0z3g20afdml4l3qw",
-  ],
-  [
-    "Certified Engineer — Multicloud Network Associate",
-    "Aviatrix",
-    "https://www.credly.com/badges/c2759b99-09d5-4417-8a06-66e26a92ce34/public_url",
-  ],
-  [
-    "Certified Essentials RPA Professional",
-    "Automation Anywhere University",
-    "https://certificates.automationanywhere.com/8379a4aa-8b54-4ab1-9145-f3f51b03999a#acc.NVHpTI9g",
-  ],
-];
-
-function Certifications() {
-  return (
-    <section id="certifications" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="Certifications" title="Credentials & badges." />
-      <div className="mt-12 grid gap-5 sm:grid-cols-2">
-        {CERTIFICATIONS.map(([title, issuer, url], i) => (
-          <Reveal key={title} delay={(i % 2) * 0.08}>
-            <motion.a
-              href={url}
-              target="_blank"
-              rel="noreferrer"
-              whileHover={{ y: -6 }}
-              className="flex h-full items-start justify-between gap-6 rounded-3xl border border-border bg-card p-7"
-            >
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
-                  {issuer}
-                </p>
-                <h3 className="mt-2 font-display text-lg font-semibold leading-snug">{title}</h3>
-                <span className="mt-3 inline-block text-sm text-muted-foreground underline decoration-border underline-offset-4">
-                  View credential
-                </span>
-              </div>
-              <span aria-hidden className="mt-1 text-xl text-muted-foreground">
-                ↗
-              </span>
-            </motion.a>
-          </Reveal>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-
 /* ---------------- Skills ---------------- */
 function Skills() {
   const groups: [string, string[]][] = [
-    ["Programming", ["Java", "Python", "C", "SQL"]],
-    ["Frontend", ["React"]],
-    ["Databases", ["MongoDB", "SQL"]],
-    ["Salesforce", ["Agentforce", "Lightning Web Components", "Apex", "SOQL"]],
+    ["Languages", ["Python", "SQL", "Java", "JavaScript (Node.js)", "C", "Apex"]],
     [
-      "Artificial Intelligence",
+      "Backend & APIs",
       [
-        "Machine Learning",
-        "Deep Learning",
-        "Neural Networks",
-        "Computer Vision",
-        "Speech Processing",
-        "RAG",
-        "LLMs",
-        "LangChain",
+        "REST API Design",
+        "Flask",
+        "Django",
+        "Spring Boot",
+        "Event-Driven Design",
+        "Unit & Integration Testing",
       ],
     ],
-    ["Soft Skills", ["Problem Solving", "Continuous Learning", "Adaptability", "Innovation Mindset"]],
+    [
+      "LLM & AI Systems",
+      [
+        "LLM APIs",
+        "Prompt Engineering",
+        "Tool Calling",
+        "RAG",
+        "AI Agents",
+        "LangChain",
+        "LangGraph",
+        "Multi-Agent Orchestration",
+        "Agentforce",
+      ],
+    ],
+    ["Databases", ["PostgreSQL", "MongoDB", "Schema Design"]],
+    [
+      "Cloud & DevOps",
+      ["AWS (Kinesis, Lambda, S3)", "Docker", "CI/CD Pipelines", "Git/GitHub"],
+    ],
+    [
+      "Frontend & Practices",
+      ["React", "HTML/CSS", "Agile/Scrum", "Peer Code Review", "Root Cause Analysis"],
+    ],
   ];
   return (
     <section id="skills" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="Skills & Expertise" title="The technical toolkit." />
+      <SectionHeading eyebrow="Technical Skills" title="The technical toolkit." />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {groups.map(([title, items], i) => (
           <Reveal key={title} delay={(i % 3) * 0.08}>
@@ -547,7 +497,7 @@ function Skills() {
                 {items.map((s) => (
                   <span
                     key={s}
-                    className="rounded-full border border-border bg-muted px-3 py-1.5 text-sm"
+                    className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-medium sm:text-sm"
                   >
                     {s}
                   </span>
@@ -561,19 +511,196 @@ function Skills() {
   );
 }
 
+/* ---------------- Projects ---------------- */
+function Projects() {
+  const projects = [
+    {
+      title: "Agentic RAG Pipeline for Document Q&A",
+      subtitle: "Python, LangChain, LangGraph, LLM APIs",
+      desc: "Built a multi-agent RAG system with embeddings-based retrieval, reranking, and tool-calling agents that synthesize source-grounded answers over large document corpora.",
+      tags: ["Python", "LangChain", "LangGraph", "LLM APIs", "RAG", "Multi-Agent"],
+    },
+    {
+      title: "Cloud-Based CI/CD Pipeline for ML in Healthcare",
+      subtitle: "AWS, Docker, CI/CD, MLOps – Published Research",
+      desc: "Designed and evaluated an MLOps pipeline automating build, test, versioning, and deployment of a breast-cancer prediction model, covering the full model lifecycle from training to release.",
+      tags: ["AWS", "Docker", "CI/CD", "MLOps", "Healthcare AI", "Published Research"],
+    },
+    {
+      title: "Real-Time Stream Analytics on AWS",
+      subtitle: "AWS Kinesis, Lambda, S3, Python",
+      desc: "Designed a scalable, fault-tolerant event-driven pipeline for real-time data ingestion and processing, delivering insights through analytics dashboards.",
+      tags: ["AWS Kinesis", "AWS Lambda", "AWS S3", "Python", "Event-Driven", "Real-Time"],
+    },
+  ];
+  return (
+    <section id="projects" className="mx-auto max-w-7xl px-6 py-28">
+      <SectionHeading eyebrow="Projects" title="Featured engineering projects." />
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
+        {projects.map((p, i) => (
+          <Reveal key={p.title} delay={i * 0.1}>
+            <motion.div
+              whileHover={{ y: -8 }}
+              className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/25 via-accent/10 to-transparent p-6 flex flex-col justify-between">
+                <span className="font-display text-4xl font-bold text-foreground/20">
+                  0{i + 1}
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                  {p.subtitle}
+                </span>
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <h3 className="font-display text-xl font-semibold leading-tight">{p.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                  {p.desc}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {p.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Publications ---------------- */
+function Publications() {
+  const pubs = [
+    {
+      title: "A Cloud-Based CI/CD Pipeline for Machine Learning in Healthcare: Breast Cancer Prediction",
+      desc: "Published research detailing an automated MLOps pipeline covering model training, testing, artifact versioning, containerization with Docker, and cloud-based automated deployment on AWS.",
+      badge: "Published Research",
+    },
+    {
+      title: "Safe Ride AI Helmet System",
+      desc: "Intelligent real-time computer vision safety system detecting helmet compliance and violations, integrating deep learning models with event-driven alerting.",
+      badge: "AI & Computer Vision",
+    },
+  ];
+  return (
+    <section id="publications" className="mx-auto max-w-7xl px-6 py-28">
+      <SectionHeading eyebrow="Research & Publications" title="Published work." />
+      <div className="mt-12 grid gap-6 md:grid-cols-2">
+        {pubs.map((pub, i) => (
+          <Reveal key={pub.title} delay={i * 0.1}>
+            <motion.div
+              whileHover={{ y: -6 }}
+              className="flex h-full flex-col justify-between rounded-3xl border border-border bg-card p-8 transition-shadow hover:glow"
+            >
+              <div>
+                <span className="inline-block rounded-full bg-primary/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+                  {pub.badge}
+                </span>
+                <h3 className="mt-4 font-display text-xl font-bold leading-snug">
+                  {pub.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  {pub.desc}
+                </p>
+              </div>
+            </motion.div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Certifications ---------------- */
+const CERTIFICATIONS: [string, string, string][] = [
+  [
+    "Salesforce Certified AI Associate",
+    "Salesforce",
+    "https://www.salesforce.com/trailblazer/cv0z3g20afdml4l3qw",
+  ],
+  [
+    "5-Day AI Agents: Intensive Vibe Coding",
+    "Kaggle",
+    "https://www.kaggle.com/certification/badges/yashrajnemala/108",
+  ],
+  [
+    "Red Hat Certified Enterprise Application Developer",
+    "Red Hat",
+    "https://www.credly.com/badges/e995faa2-4a89-4d28-9ce6-2c6a152db90d/public_url",
+  ],
+  [
+    "Aviatrix Certified Engineer — Multicloud Network Associate",
+    "Aviatrix",
+    "https://www.credly.com/badges/c2759b99-09d5-4417-8a06-66e26a92ce34/public_url",
+  ],
+  [
+    "Automation Anywhere Certified Essentials RPA Professional",
+    "Automation Anywhere",
+    "https://certificates.automationanywhere.com/8379a4aa-8b54-4ab1-9145-f3f51b03999a#acc.NVHpTI9g",
+  ],
+  [
+    "TalentNext Java Full Stack Certificate",
+    "Wipro",
+    "https://drive.google.com/file/d/1nMorFsxLYyWHDkh29hNmRJuTiV9rBM4b/view?usp=drive_link",
+  ],
+];
+
+function Certifications() {
+  return (
+    <section id="certifications" className="mx-auto max-w-7xl px-6 py-28">
+      <SectionHeading eyebrow="Certifications" title="Credentials & badges." />
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {CERTIFICATIONS.map(([title, issuer, url], i) => (
+          <Reveal key={title} delay={(i % 3) * 0.08}>
+            <motion.a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              whileHover={{ y: -6 }}
+              className="flex h-full flex-col justify-between rounded-3xl border border-border bg-card p-7 transition-shadow hover:glow"
+            >
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">
+                  {issuer}
+                </p>
+                <h3 className="mt-2 font-display text-lg font-semibold leading-snug">{title}</h3>
+              </div>
+              <div className="mt-6 flex items-center justify-between border-t border-border/50 pt-4">
+                <span className="text-xs font-medium text-muted-foreground underline decoration-border underline-offset-4">
+                  View credential
+                </span>
+                <span aria-hidden className="text-base text-muted-foreground">
+                  ↗
+                </span>
+              </div>
+            </motion.a>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* ---------------- Services ---------------- */
 function Services() {
   const services = [
-    ["Salesforce Development", "Customization & configuration tailored to enterprise needs."],
-    ["Agentforce AI Agents", "Autonomous agents that act on enterprise data securely."],
-    ["AI / ML Solutions", "End-to-end machine learning models and pipelines."],
-    ["RAG & LLM Apps", "Retrieval-augmented generation for grounded intelligence."],
-    ["LangChain Applications", "Composable AI workflows and orchestration."],
-    ["Computer Vision", "Image classification, detection & visual intelligence."],
+    ["Python & REST APIs", "Robust, scalable backend APIs built with Flask, Django & FastAPI."],
+    ["Agentic AI & Multi-Agent Workflows", "Stateful, tool-calling agents engineered with LangGraph & LangChain."],
+    ["Enterprise Agentforce Solutions", "Autonomous agents securely integrated with enterprise data and Salesforce CRM."],
+    ["RAG Systems", "Retrieval-augmented generation pipelines over complex enterprise document corpora."],
+    ["Cloud & MLOps Pipelines", "CI/CD automation, Docker containerization, and AWS serverless deployment."],
+    ["Database Architecture", "Relational and NoSQL schema design optimized with PostgreSQL and MongoDB."],
   ];
   return (
     <section id="services" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="Services" title="What I can build for you." />
+      <SectionHeading eyebrow="Capabilities" title="What I can build for you." />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {services.map(([t, d], i) => (
           <Reveal key={t} delay={(i % 3) * 0.08}>
@@ -593,81 +720,15 @@ function Services() {
   );
 }
 
-/* ---------------- Projects ---------------- */
-function Projects() {
-  const projects = [
-    [
-      "Tomato Leaf Disease Prediction",
-      "An intelligent agricultural disease detection system using computer vision and deep learning.",
-      ["Python", "Deep Learning", "Computer Vision"],
-    ],
-    [
-      "Sonar Classification",
-      "A machine learning model that classifies sonar signals to identify object categories.",
-      ["Python", "Machine Learning"],
-    ],
-    [
-      "Vehicle Classification",
-      "A computer vision system that identifies and classifies vehicle types in real time.",
-      ["Python", "Deep Learning", "Computer Vision"],
-    ],
-  ] as [string, string, string[]][];
-  return (
-    <section id="projects" className="mx-auto max-w-7xl px-6 py-28">
-      <SectionHeading eyebrow="Projects" title="Selected work." />
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {projects.map(([t, d, tags], i) => (
-          <Reveal key={t} delay={i * 0.1}>
-            <motion.div
-              whileHover={{ y: -8 }}
-              className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/25 via-accent/10 to-transparent">
-                <div className="absolute inset-0 grid place-items-center">
-                  <span className="font-display text-6xl font-bold text-foreground/15">
-                    0{i + 1}
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-display text-xl font-semibold">{t}</h3>
-                <p className="mt-2 flex-1 text-sm text-muted-foreground">{d}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </Reveal>
-        ))}
-      </div>
-      <Reveal delay={0.2}>
-        <div className="mt-10 rounded-3xl border border-dashed border-border bg-card/50 p-10 text-center">
-          <h3 className="font-display text-2xl font-bold">More Innovations Coming Soon</h3>
-          <p className="mt-2 text-muted-foreground">
-            Continuously building — bigger AI experiences are on the way.
-          </p>
-        </div>
-      </Reveal>
-    </section>
-  );
-}
-
 /* ---------------- Learning ---------------- */
 function Learning() {
   const items = [
-    "Advanced Agentforce Capabilities",
-    "Enterprise AI Systems",
-    "Advanced LLM Architectures",
-    "Retrieval-Augmented Generation",
-    "LangChain Ecosystems",
-    "Emerging AI Trends",
+    "Multi-Agent Orchestration & LangGraph",
+    "Production-Grade Agentic RAG Systems",
+    "Enterprise Agentforce & Apex Microservices",
+    "Scalable Stream Processing with AWS Kinesis",
+    "Distributed System Reliability & MLOps",
+    "Advanced Prompting & Structured Tool Calling",
   ];
   return (
     <section className="mx-auto max-w-7xl px-6 py-28">
@@ -697,7 +758,7 @@ function ResumeCTA() {
           <div className="absolute left-1/2 top-0 h-40 w-40 -translate-x-1/2 rounded-full bg-primary/30 blur-3xl" />
           <h2 className="font-display text-4xl font-bold sm:text-5xl">Get my resume</h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            Explore my journey, achievements, and technical expertise.
+            Explore my latest experience in Backend &amp; AI Engineering, Agentic RAG pipelines, and full-stack systems.
           </p>
           <div className="mt-8 flex justify-center">
             <MagneticButton href={resumeUrl} download="Nemala_Yash_Raj_Resume.pdf">
