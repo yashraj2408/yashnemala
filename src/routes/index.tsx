@@ -11,8 +11,9 @@ import {
 } from "@/components/portfolio-ui";
 import { ChatWidget } from "@/components/chat-widget";
 import { CursorMascot } from "@/components/cursor-mascot";
+import resumeAsset from "@/assets/yash-raj-resume.pdf.asset.json";
 
-const resumeUrl = "/Nemala_Yash_Raj_Resume.pdf";
+const resumeUrl = (resumeAsset as { url: string }).url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -229,7 +230,7 @@ function Hero({ theme, toggle }: { theme: string; toggle: () => void }) {
             Python REST APIs and LLM-powered applications, with hands-on RAG pipelines, tool-calling agents, and multi-agent workflows.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <MagneticButton href={resumeUrl} download="Nemala_Yash_Raj_Resume.pdf">
+            <MagneticButton href={resumeUrl} download="Yash_Raj_Resume.pdf">
               Resume ↓
             </MagneticButton>
             <MagneticButton href="#contact" variant="ghost">
@@ -761,7 +762,7 @@ function ResumeCTA() {
             Explore my latest experience in Backend &amp; AI Engineering, Agentic RAG pipelines, and full-stack systems.
           </p>
           <div className="mt-8 flex justify-center">
-            <MagneticButton href={resumeUrl} download="Nemala_Yash_Raj_Resume.pdf">
+            <MagneticButton href={resumeUrl} download="Yash_Raj_Resume.pdf">
               Download Resume ↓
             </MagneticButton>
           </div>
